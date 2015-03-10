@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="org.nopattern.cordova.brightcove-player"
+    version="0.0.1">
+    <name>BrightcovePlayer</name>
+    <description>Brightcove Native Player for Cordova</description>
+    <license>Apache 2.0</license>
+    <keywords>Cordova,Brightcove,Player</keywords>
+
+  <js-module src="www/player.js" name="player">
+    <clobbers target="cordova.plugins.Brightcove" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="BrightcovePlayer">
+        <param name="android-package" value="org.nopattern.cordova.brightcove-player" />
+        <param name="onload" value="true" />
+      </feature>
+    </config-file>
+
+    <source-file src="src/android/BrightcovePlayer.java" target-dir="src/org/nopattern/cordova/brightcove-player" />
+  </platform>
+
+</plugin>
