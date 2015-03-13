@@ -6,9 +6,33 @@ var argscheck = require('cordova/argscheck'),
 var BrightcovePlayerPlugin = function() {
 };
 
-BrightcovePlayerPlugin.play = function(url) {
-  exec(null, null, "BrightcovePlayerPlugin", "play", [url]);
+BrightcovePlayerPlugin.playByUrl = function(url) {
+  exec(
+    successHandler, 
+    errorHandler, 
+    "BrightcovePlayerPlugin", 
+    "playByUrl", 
+    [url]
+  );
 };
+
+BrightcovePlayerPlugin.playById = function(url) {
+  exec(
+    successHandler, 
+    errorHandler, 
+    "BrightcovePlayerPlugin", 
+    "playById", 
+    [url]
+  );
+};
+
+function successHandler(success) {
+  console.log(success);
+}
+
+function errorHandler(error) {
+  console.log(error);
+}
 
 BrightcovePlayerPlugin.playing = false;
 

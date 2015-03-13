@@ -10,8 +10,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Patterns;
+import android.net.Uri;
 
 public class BrightcovePlayerPlugin extends CordovaPlugin {
+  protected static final String LOG_TAG = "[BrightcovePlayerPlugin]";
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -20,19 +22,31 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
 
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-    if (action.equals("play")) {
+    if (action.equals("playByUrl")) {
       String url = args.getString(0);
-      this.play(url, callbackContext);
+      this.playByUrl(url, callbackContext);
+      return true;
+    } else if (action.equals("playById")) {
+      String id = args.getString(0);
+      this.playById(id, callbackContext);
       return true;
     }
     return false;
   }
 
-  private void play(String url, CallbackContext callbackContext) {
+  private void playByUrl(String url, CallbackContext callbackContext) {
     if (this.urlIsValid(url)) {
-      callbackContext.success("Playing now: " + url);
+      callbackContext.success(LOG_TAG + " Playing now: " + url);
     } else {
-      callbackContext.error("URL is not valid or empty!");
+      callbackContext.error(LOG_TAG + " URL is not valid or empty!");
+    }
+  }
+
+  private void playById(String id, CallbackContext callbackContext) {
+    if (id != null && id.length() > 0){
+      callbackContext.success(LOG_TAG + " Playing now: " + id);
+    } else{
+      callbackContext.error(LOG_TAG + " Empty video ID!");
     }
   }
 

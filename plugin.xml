@@ -14,7 +14,6 @@
 
   <!-- android -->
   <platform name="android">
-
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BrightcovePlayerPlugin">
         <param name="android-package" value="org.nopattern.cordova.brightcoveplayer.BrightcovePlayerPlugin" />
@@ -22,8 +21,23 @@
       </feature>
     </config-file>
 
+    <config-file target="AndroidManifest.xml" parent="application">
+      <activity
+          android:name="org.nopattern.cordova.brightcoveplayer.BrightcoveActivity"
+          android:screenOrientation="unspecified"
+          android:configChanges="orientation|screenSize"
+          android:label="@string/app_name" >
+          <intent-filter>
+              <action android:name="android.intent.action.MAIN" />
+              <category android:name="android.intent.category.LAUNCHER" />
+          </intent-filter>
+      </activity>
+    </config-file>
+
     <source-file src="src/android/BrightcovePlayerPlugin.java" target-dir="src/org/nopattern/cordova/brightcoveplayer" />
+    <source-file src="src/android/BrightcoveActivity.java" target-dir="src/org/nopattern/cordova/brightcoveplayer" />
     <source-file src="src/android/android-sdk-4.3.4.jar" target-dir="libs" />
+    <source-file src="res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
   </platform>
 
 </plugin>
