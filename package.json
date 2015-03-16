@@ -1,6 +1,6 @@
 {
     "version": "0.0.1",
-    "name": "org.nopattern.cordova.brightcoveplayer",
+    "name": "net.nopattern.cordova.brightcoveplayer",
     "cordova_name": "BrightcovePlayerPlugin",
     "description": "Brightcove Native Player for Cordova",
     "license": "Apache 2.0",

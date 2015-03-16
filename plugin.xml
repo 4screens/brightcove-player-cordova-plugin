@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-    id="org.nopattern.cordova.brightcoveplayer"
+    id="net.nopattern.cordova.brightcoveplayer"
     version="0.0.1">
     <name>BrightcovePlayerPlugin</name>
     <description>Brightcove Native Player for Cordova</description>
@@ -16,28 +16,23 @@
   <platform name="android">
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BrightcovePlayerPlugin">
-        <param name="android-package" value="org.nopattern.cordova.brightcoveplayer.BrightcovePlayerPlugin" />
+        <param name="android-package" value="net.nopattern.cordova.brightcoveplayer.BrightcovePlayerPlugin" />
         <param name="onload" value="true" />
       </feature>
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="application">
       <activity
-          android:name="org.nopattern.cordova.brightcoveplayer.BrightcoveActivity"
-          android:screenOrientation="unspecified"
-          android:configChanges="orientation|screenSize"
+          android:name="net.nopattern.cordova.brightcoveplayer.BrightcoveActivity"
           android:label="@string/app_name" >
-          <intent-filter>
-              <action android:name="android.intent.action.MAIN" />
-              <category android:name="android.intent.category.LAUNCHER" />
-          </intent-filter>
       </activity>
     </config-file>
 
-    <source-file src="src/android/BrightcovePlayerPlugin.java" target-dir="src/org/nopattern/cordova/brightcoveplayer" />
-    <source-file src="src/android/BrightcoveActivity.java" target-dir="src/org/nopattern/cordova/brightcoveplayer" />
-    <source-file src="src/android/android-sdk-4.3.4.jar" target-dir="libs" />
+    <source-file src="src/android/BrightcovePlayerPlugin.java" target-dir="src/net/nopattern/cordova/brightcoveplayer" />
+    <source-file src="src/android/BrightcoveActivity.java" target-dir="src/net/nopattern/cordova/brightcoveplayer" />
+    <source-file src="src/android/android-sdk-4.2.7.jar" target-dir="libs" />
     <source-file src="res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
+    <source-file src="res/raw/shark.mp4" target-dir="res/raw" />
   </platform>
 
 </plugin>

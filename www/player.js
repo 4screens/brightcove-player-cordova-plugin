@@ -16,13 +16,23 @@ BrightcovePlayerPlugin.playByUrl = function(url) {
   );
 };
 
-BrightcovePlayerPlugin.playById = function(url) {
+BrightcovePlayerPlugin.playById = function(id) {
   exec(
     successHandler, 
     errorHandler, 
     "BrightcovePlayerPlugin", 
     "playById", 
-    [url]
+    [id]
+  );
+};
+
+BrightcovePlayerPlugin.init = function(token) {
+  exec(
+    successHandler, 
+    errorHandler, 
+    "BrightcovePlayerPlugin", 
+    "init", 
+    [token]
   );
 };
 

@@ -1,4 +1,4 @@
-package org.nopattern.cordova.brightcoveplayer;
+package net.nopattern.cordova.brightcoveplayer;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -9,11 +9,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Patterns;
 import android.net.Uri;
 
 public class BrightcovePlayerPlugin extends CordovaPlugin {
   protected static final String LOG_TAG = "[BrightcovePlayerPlugin]";
+  private String token = null;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -30,11 +33,18 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       String id = args.getString(0);
       this.playById(id, callbackContext);
       return true;
+    } else if(action.equals("init")) {
+      String token = args.getString(0);
+      this.initBrightcove(token, callbackContext);
     }
     return false;
   }
 
   private void playByUrl(String url, CallbackContext callbackContext) {
+    if (this.token == null){
+      callbackContext.error(LOG_TAG + " Please init the brightcove with token!");
+      return;
+    }
     if (this.urlIsValid(url)) {
       callbackContext.success(LOG_TAG + " Playing now: " + url);
     } else {
@@ -43,11 +53,32 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
   }
 
   private void playById(String id, CallbackContext callbackContext) {
+    if (this.token == null){
+      callbackContext.error(LOG_TAG + " Please init the brightcove with token!");
+      return;
+    }
     if (id != null && id.length() > 0){
+      this.showActivity();
       callbackContext.success(LOG_TAG + " Playing now: " + id);
     } else{
       callbackContext.error(LOG_TAG + " Empty video ID!");
     }
+  }
+
+  private void initBrightcove(String token, CallbackContext callbackContext) {
+    if (token != null && token.length() > 0){
+      this.token = token;
+      callbackContext.success(LOG_TAG + " Inited");
+    } else{
+      callbackContext.error(LOG_TAG + " Empty Brightcove token!");
+    }
+  }
+
+  private void showActivity() {
+    Context context = this.cordova.getActivity().getApplicationContext();
+    Intent intent = new Intent(context, BrightcoveActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    context.startActivity(intent);
   }
 
   private boolean urlIsValid(String url) {
