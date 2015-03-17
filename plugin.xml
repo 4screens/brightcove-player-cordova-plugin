@@ -14,6 +14,7 @@
 
   <!-- android -->
   <platform name="android">
+    <dependency id="com.google.playservices@19.0.0" />
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BrightcovePlayerPlugin">
         <param name="android-package" value="net.nopattern.cordova.brightcoveplayer.BrightcovePlayerPlugin" />
@@ -22,6 +23,9 @@
     </config-file>
 
     <config-file target="AndroidManifest.xml" parent="application">
+      <meta-data
+          android:name="com.google.android.gms.version"
+          android:value="@integer/google_play_services_version" />
       <activity
           android:name="net.nopattern.cordova.brightcoveplayer.BrightcoveActivity"
           android:configChanges="orientation|screenSize"
@@ -29,11 +33,17 @@
       </activity>
     </config-file>
 
+    <!-- src -->
     <source-file src="src/android/BrightcovePlayerPlugin.java" target-dir="src/net/nopattern/cordova/brightcoveplayer" />
     <source-file src="src/android/BrightcoveActivity.java" target-dir="src/net/nopattern/cordova/brightcoveplayer" />
-    <source-file src="src/android/android-sdk-4.2.7.jar" target-dir="libs" />
+
+    <!-- libs -->
+    <source-file src="src/android/libs/android-sdk-4.2.7.jar" target-dir="libs" />
+    <source-file src="src/android/libs/android-ima-plugin-4.2.7.jar" target-dir="libs" />
+    <source-file src="src/android/libs/ima-android-sdk-beta9.jar" target-dir="libs" />
+
+    <!-- layout -->
     <source-file src="res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
-    <source-file src="res/raw/shark.mp4" target-dir="res/raw" />
   </platform>
 
 </plugin>

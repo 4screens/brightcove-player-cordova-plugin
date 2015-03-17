@@ -1,8 +1,8 @@
 package net.nopattern.cordova.brightcoveplayer;
 
-import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 
 import org.json.JSONArray;
@@ -11,12 +11,15 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Patterns;
 import android.net.Uri;
+import android.util.Log;
+import android.util.Patterns;
 
 public class BrightcovePlayerPlugin extends CordovaPlugin {
-  protected static final String LOG_TAG = "[BrightcovePlayerPlugin]";
+  protected static final String LOG_TAG = "[BrightcoveCordovaPlugin]";
+
   private String token = null;
+  private String vast = null;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -27,10 +30,12 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
     if (action.equals("playByUrl")) {
       String url = args.getString(0);
+      vast = args.getString(1);
       this.playByUrl(url, callbackContext);
       return true;
     } else if (action.equals("playById")) {
       String id = args.getString(0);
+      vast = args.getString(1);
       this.playById(id, callbackContext);
       return true;
     } else if(action.equals("init")) {
@@ -49,9 +54,10 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
       intent.putExtra("video-url", url);
       intent.putExtra("brightcove-token", this.token);
+      intent.putExtra("vast-link", vast);
       context.startActivity(intent);
 
-      callbackContext.success(LOG_TAG + " Playing now: " + url);
+      callbackContext.success(LOG_TAG + " Playing now with URL: " + url);
     } else {
       callbackContext.error(LOG_TAG + " URL is not valid or empty!");
     }
@@ -70,9 +76,10 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
       intent.putExtra("video-id", id);
       intent.putExtra("brightcove-token", this.token);
+      intent.putExtra("vast-link", vast);
       context.startActivity(intent);
 
-      callbackContext.success(LOG_TAG + " Playing now: " + id + ", Token: " + this.token);
+      callbackContext.success(LOG_TAG + " Playing now with Brightcove ID: " + id);
     } else{
       callbackContext.error(LOG_TAG + " Empty video ID!");
     }

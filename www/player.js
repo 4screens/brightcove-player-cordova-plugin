@@ -6,24 +6,27 @@ var argscheck = require('cordova/argscheck'),
 var BrightcovePlayerPlugin = function() {
 };
 
-BrightcovePlayerPlugin.playByUrl = function(url) {
+BrightcovePlayerPlugin.playByUrl = function(url, vastLink) {
   exec(
     successHandler, 
     errorHandler, 
     "BrightcovePlayerPlugin", 
     "playByUrl", 
-    [url]
+    [url, vastLink || null]
   );
+
+  console.log(vastLink || null);
 };
 
-BrightcovePlayerPlugin.playById = function(id) {
+BrightcovePlayerPlugin.playById = function(id, vastLink) {
   exec(
     successHandler, 
     errorHandler, 
     "BrightcovePlayerPlugin", 
     "playById", 
-    [id.toString()]
+    [id.toString(), vastLink || null]
   );
+  console.log(vastLink || null);
 };
 
 BrightcovePlayerPlugin.init = function(token) {

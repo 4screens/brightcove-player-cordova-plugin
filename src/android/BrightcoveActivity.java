@@ -5,32 +5,62 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.MediaController;
 
+import com.brightcove.ima.GoogleIMAComponent;
+import com.brightcove.ima.GoogleIMAEventType;
+import com.brightcove.ima.GoogleIMAVideoAdPlayer;
+
+import com.brightcove.player.event.Event;
 import com.brightcove.player.event.EventEmitter;
+import com.brightcove.player.event.EventListener;
+import com.brightcove.player.event.EventType;
 import com.brightcove.player.media.Catalog;
 import com.brightcove.player.media.VideoListener;
+import com.brightcove.player.media.VideoFields;
+import com.brightcove.player.model.CuePoint;
 import com.brightcove.player.model.Video;
+import com.brightcove.player.model.Source;
+import com.brightcove.player.util.StringUtil;
 import com.brightcove.player.view.BrightcovePlayer;
 import com.brightcove.player.view.BrightcoveVideoView;
 
+import com.google.ads.interactivemedia.v3.api.AdDisplayContainer;
+import com.google.ads.interactivemedia.v3.api.AdsRequest;
+import com.google.ads.interactivemedia.v3.api.CompanionAdSlot;
+import com.google.ads.interactivemedia.v3.api.ImaSdkFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class BrightcoveActivity extends BrightcovePlayer {
+
+  private EventEmitter eventEmitter;
+  private GoogleIMAComponent googleIMAComponent;
 
   private static final String LAYOUT = "layout";
   private static final String ID = "id";
   private static final String BRIGHTCOVE_ACTIVITY = "bundled_video_activity_brightcove";
   private static final String BRIGHTCOVE_VIEW = "brightcove_video_view";
-  private static final String TAG = "BrightcoveCordovaPlugin";
+  private static final String TAG = "BrightcoveCordovaPluginActivity";
 
   private String token = null;
   private String videoId = null;
   private String videoUrl = null;
+  private String vast = null;
+
+  private String adRulesURL = "http://tvn.adocean.pl/ad.xml?aocodetype=1/predur=46/postdur=46/overdur=65/id=lLs82a1K3Q9SGe_YJEhp0F4LQdvR2IeIUxQUOODMIvb.Z7/tvn_content_category=wideo/tvn_content_category2=castingi/tvn_traffic_tags=zielony/tvn_traffic_category=kobieta,mlodziez/tvn_page=1401747_agustin_zatanczyl_cha_che_z_tomaszem/tvn_device_type=Android";
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     setContentView(this.getIdFromResources(BRIGHTCOVE_ACTIVITY, LAYOUT));
     brightcoveVideoView = (BrightcoveVideoView) findViewById(this.getIdFromResources(BRIGHTCOVE_VIEW, ID));
     super.onCreate(savedInstanceState);
+    eventEmitter = brightcoveVideoView.getEventEmitter();
 
     Log.d(TAG, "Init");
 
@@ -39,6 +69,16 @@ public class BrightcoveActivity extends BrightcovePlayer {
     token = intent.getStringExtra("brightcove-token");
     videoId = intent.getStringExtra("video-id");
     videoUrl = intent.getStringExtra("video-url");
+    vast = intent.getStringExtra("vast-link");
+
+    Log.d(TAG, "Vast link: " + vast);
+
+    setupGoogleIMA();
+
+    Map<String, String> options = new HashMap<String, String>();
+    List<String> values = new ArrayList<String>(Arrays.asList(VideoFields.DEFAULT_FIELDS));
+    values.remove(VideoFields.HLS_URL);
+    options.put("video_fields", StringUtil.join(values, ","));
 
     if (videoId != null){
       playById(token, videoId);
@@ -71,6 +111,9 @@ public class BrightcoveActivity extends BrightcovePlayer {
     });
     token = null;
     videoId = null;
+    vast = null;
+
+    return;
   }
 
   private void playByUrl(String url){
@@ -82,7 +125,85 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
     token = null;
     videoUrl = null;
+    vast = null;
 
     return;
+  }
+
+  private void setupCuePoints(Source source) {
+    String cuePointType = "ad";
+    Map<String, Object> properties = new HashMap<String, Object>();
+    Map<String, Object> details = new HashMap<String, Object>();
+
+    // preroll
+    CuePoint cuePoint = new CuePoint(CuePoint.PositionType.BEFORE, cuePointType, properties);
+    details.put(Event.CUE_POINT, cuePoint);
+    eventEmitter.emit(EventType.SET_CUE_POINT, details);
+  }
+
+
+  private void setupGoogleIMA() {
+
+    final int adFrameId = this.getIdFromResources("ad_frame", "id");
+    final String vastLink = vast;
+
+    eventEmitter.on(EventType.DID_SET_SOURCE, new EventListener() {
+      @Override
+      public void processEvent(Event event) {
+        setupCuePoints((Source) event.properties.get(Event.SOURCE));
+      }
+    });
+
+    final ImaSdkFactory sdkFactory = ImaSdkFactory.getInstance();
+
+    eventEmitter.on(GoogleIMAEventType.DID_START_AD, new EventListener() {
+      @Override
+      public void processEvent(Event event) {
+        Log.v(TAG, event.getType());
+      }
+    });
+
+    eventEmitter.on(GoogleIMAEventType.DID_FAIL_TO_PLAY_AD, new EventListener() {
+      @Override
+      public void processEvent(Event event) {
+        Log.v(TAG, event.getType());
+      }
+    });
+
+    eventEmitter.on(GoogleIMAEventType.DID_COMPLETE_AD, new EventListener() {
+      @Override
+      public void processEvent(Event event) {
+        Log.v(TAG, event.getType());
+      }
+    });
+
+    eventEmitter.on(GoogleIMAEventType.ADS_REQUEST_FOR_VIDEO, new EventListener() {
+      @Override
+      public void processEvent(Event event) {
+        AdDisplayContainer container = sdkFactory.createAdDisplayContainer();
+        container.setPlayer(googleIMAComponent.getVideoAdPlayer());
+        container.setAdContainer(brightcoveVideoView);
+
+        ArrayList<CompanionAdSlot> companionAdSlots = new ArrayList<CompanionAdSlot>();
+        CompanionAdSlot companionAdSlot = sdkFactory.createCompanionAdSlot();
+        ViewGroup adFrame = (ViewGroup) findViewById(adFrameId);
+        companionAdSlot.setContainer(adFrame);
+        companionAdSlot.setSize(adFrame.getWidth(), adFrame.getHeight());
+        companionAdSlots.add(companionAdSlot);
+        container.setCompanionSlots(companionAdSlots);
+
+        AdsRequest adsRequest = sdkFactory.createAdsRequest();
+        adsRequest.setAdTagUrl(vastLink);
+        adsRequest.setAdDisplayContainer(container);
+
+        ArrayList<AdsRequest> adsRequests = new ArrayList<AdsRequest>(1);
+        adsRequests.add(adsRequest);
+
+        event.properties.put(GoogleIMAComponent.ADS_REQUESTS, adsRequests);
+        eventEmitter.respond(event);
+      }
+    });
+
+    googleIMAComponent = new GoogleIMAComponent(brightcoveVideoView, eventEmitter);
   }
 }
