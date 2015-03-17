@@ -24,6 +24,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
   private String token = null;
   private String videoId = null;
+  private String videoUrl = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +38,27 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
     token = intent.getStringExtra("brightcove-token");
     videoId = intent.getStringExtra("video-id");
+    videoUrl = intent.getStringExtra("video-url");
 
-    Log.d(TAG, "Token: " + token);
-    Log.d(TAG, "VideoId: " + videoId);
+    if (videoId != null){
+      playById(token, videoId);
+    } else if (videoUrl != null){
+      playByUrl(videoUrl);
+    }
+    return;
+
+  }
+
+  private int getIdFromResources(String what, String where){
+    String package_name = getApplication().getPackageName();
+    Resources resources = getApplication().getResources();
+    return resources.getIdentifier(what, where, package_name);
+  }
+
+  private void playById(String token, String id){
+    Log.d(TAG, "Playing video from brightcove ID: " + id);
 
     this.fullScreen();
-
     Catalog catalog = new Catalog(token);
     catalog.findVideoByReferenceID(videoId, new VideoListener() {
       public void onVideo(Video video) {
@@ -53,11 +69,20 @@ public class BrightcoveActivity extends BrightcovePlayer {
         Log.e(TAG, error);
       }
     });
+    token = null;
+    videoId = null;
   }
 
-  private int getIdFromResources(String what, String where){
-    String package_name = getApplication().getPackageName();
-    Resources resources = getApplication().getResources();
-    return resources.getIdentifier(what, where, package_name);
+  private void playByUrl(String url){
+    Log.d(TAG, "Playing video from url: " + url);
+    this.fullScreen();
+
+    brightcoveVideoView.add(Video.createVideo(url));
+    brightcoveVideoView.start();
+
+    token = null;
+    videoUrl = null;
+
+    return;
   }
 }

@@ -46,6 +46,15 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       return;
     }
     if (this.urlIsValid(url)) {
+
+      Context context = this.cordova.getActivity().getApplicationContext();
+      Intent intent = new Intent(context, BrightcoveActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+      intent.putExtra("video-url", url);
+      intent.putExtra("brightcove-token", this.token);
+      context.startActivity(intent);
+
       callbackContext.success(LOG_TAG + " Playing now: " + url);
     } else {
       callbackContext.error(LOG_TAG + " URL is not valid or empty!");
