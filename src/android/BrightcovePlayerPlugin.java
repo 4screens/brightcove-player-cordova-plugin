@@ -41,10 +41,6 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
   }
 
   private void playByUrl(String url, CallbackContext callbackContext) {
-    if (this.token == null){
-      callbackContext.error(LOG_TAG + " Please init the brightcove with token!");
-      return;
-    }
     if (this.urlIsValid(url)) {
 
       Context context = this.cordova.getActivity().getApplicationContext();
