@@ -58,8 +58,16 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       return;
     }
     if (id != null && id.length() > 0){
-      this.showActivity();
-      callbackContext.success(LOG_TAG + " Playing now: " + id);
+
+      Context context = this.cordova.getActivity().getApplicationContext();
+      Intent intent = new Intent(context, BrightcoveActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+      intent.putExtra("video-id", id);
+      intent.putExtra("brightcove-token", this.token);
+      context.startActivity(intent);
+
+      callbackContext.success(LOG_TAG + " Playing now: " + id + ", Token: " + this.token);
     } else{
       callbackContext.error(LOG_TAG + " Empty video ID!");
     }
@@ -72,13 +80,6 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
     } else{
       callbackContext.error(LOG_TAG + " Empty Brightcove token!");
     }
-  }
-
-  private void showActivity() {
-    Context context = this.cordova.getActivity().getApplicationContext();
-    Intent intent = new Intent(context, BrightcoveActivity.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    context.startActivity(intent);
   }
 
   private boolean urlIsValid(String url) {

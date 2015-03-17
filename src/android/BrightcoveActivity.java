@@ -1,5 +1,6 @@
 package net.nopattern.cordova.brightcoveplayer;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.util.Log;
 import android.widget.MediaController;
 
 import com.brightcove.player.event.EventEmitter;
+import com.brightcove.player.media.Catalog;
+import com.brightcove.player.media.VideoListener;
 import com.brightcove.player.model.Video;
 import com.brightcove.player.view.BrightcovePlayer;
 import com.brightcove.player.view.BrightcoveVideoView;
@@ -17,6 +20,10 @@ public class BrightcoveActivity extends BrightcovePlayer {
   private static final String ID = "id";
   private static final String BRIGHTCOVE_ACTIVITY = "bundled_video_activity_brightcove";
   private static final String BRIGHTCOVE_VIEW = "brightcove_video_view";
+  private static final String TAG = "BrightcoveCordovaPlugin";
+
+  private String token = null;
+  private String videoId = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +31,28 @@ public class BrightcoveActivity extends BrightcovePlayer {
     brightcoveVideoView = (BrightcoveVideoView) findViewById(this.getIdFromResources(BRIGHTCOVE_VIEW, ID));
     super.onCreate(savedInstanceState);
 
-    Log.d("BrightcovePlugin", "Init");
+    Log.d(TAG, "Init");
 
-    String PACKAGE_NAME = getApplicationContext().getPackageName();
-    Uri video = Uri.parse("android.resource://" + PACKAGE_NAME + "/" + this.getIdFromResources("shark", "raw"));
-    brightcoveVideoView.add(Video.createVideo(video.toString()));
+    Intent intent = getIntent();
+
+    token = intent.getStringExtra("brightcove-token");
+    videoId = intent.getStringExtra("video-id");
+
+    Log.d(TAG, "Token: " + token);
+    Log.d(TAG, "VideoId: " + videoId);
+
     this.fullScreen();
-    brightcoveVideoView.start();
+
+    Catalog catalog = new Catalog(token);
+    catalog.findVideoByReferenceID(videoId, new VideoListener() {
+      public void onVideo(Video video) {
+        brightcoveVideoView.add(video);
+        brightcoveVideoView.start();
+      }
+      public void onError(String error) {
+        Log.e(TAG, error);
+      }
+    });
   }
 
   private int getIdFromResources(String what, String where){

@@ -22,7 +22,7 @@ BrightcovePlayerPlugin.playById = function(id) {
     errorHandler, 
     "BrightcovePlayerPlugin", 
     "playById", 
-    [id]
+    [id.toString()]
   );
 };
 
