@@ -135,7 +135,6 @@ public class BrightcoveActivity extends BrightcovePlayer {
     Map<String, Object> properties = new HashMap<String, Object>();
     Map<String, Object> details = new HashMap<String, Object>();
 
-    // preroll
     CuePoint cuePoint = new CuePoint(CuePoint.PositionType.BEFORE, cuePointType, properties);
     details.put(Event.CUE_POINT, cuePoint);
     eventEmitter.emit(EventType.SET_CUE_POINT, details);
