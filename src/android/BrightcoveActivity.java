@@ -5,8 +5,10 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
 
 import com.brightcove.ima.GoogleIMAComponent;
 import com.brightcove.ima.GoogleIMAEventType;
@@ -41,12 +43,15 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
   private EventEmitter eventEmitter;
   private GoogleIMAComponent googleIMAComponent;
+  private ProgressBar spinner;
 
   private static final String LAYOUT = "layout";
   private static final String ID = "id";
   private static final String BRIGHTCOVE_ACTIVITY = "bundled_video_activity_brightcove";
   private static final String BRIGHTCOVE_VIEW = "brightcove_video_view";
   private static final String TAG = "BrightcoveCordovaPluginActivity";
+  private static final String PROGRESS_BAR = "progressBar1";
+  private static final String AD_FRAME = "ad_frame";
 
   private String token = null;
   private String videoId = null;
@@ -59,6 +64,9 @@ public class BrightcoveActivity extends BrightcovePlayer {
   protected void onCreate(Bundle savedInstanceState) {
     setContentView(this.getIdFromResources(BRIGHTCOVE_ACTIVITY, LAYOUT));
     brightcoveVideoView = (BrightcoveVideoView) findViewById(this.getIdFromResources(BRIGHTCOVE_VIEW, ID));
+
+    spinner = (ProgressBar)findViewById(this.getIdFromResources(PROGRESS_BAR, ID));
+
     super.onCreate(savedInstanceState);
     eventEmitter = brightcoveVideoView.getEventEmitter();
 
@@ -143,8 +151,16 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
   private void setupGoogleIMA() {
 
-    final int adFrameId = this.getIdFromResources("ad_frame", "id");
+    final int adFrameId = this.getIdFromResources("ad_frame", ID);
     final String vastLink = vast;
+    final ProgressBar spinnerInst = spinner;
+
+    eventEmitter.on(EventType.DID_PLAY, new EventListener(){
+      @Override
+      public void processEvent(Event event) {
+        spinnerInst.setVisibility(View.GONE);
+      }
+    });
 
     eventEmitter.on(EventType.DID_SET_SOURCE, new EventListener() {
       @Override
@@ -159,6 +175,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
       @Override
       public void processEvent(Event event) {
         Log.v(TAG, event.getType());
+        spinnerInst.setVisibility(View.GONE);
       }
     });
 
@@ -173,6 +190,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
       @Override
       public void processEvent(Event event) {
         Log.v(TAG, event.getType());
+        spinnerInst.setVisibility(View.VISIBLE);
       }
     });
 
