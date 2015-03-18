@@ -38,8 +38,8 @@
     <source-file src="src/android/BrightcoveActivity.java" target-dir="src/net/nopattern/cordova/brightcoveplayer" />
 
     <!-- libs -->
-    <source-file src="src/android/libs/android-sdk-4.2.7.jar" target-dir="libs" />
-    <source-file src="src/android/libs/android-ima-plugin-4.2.7.jar" target-dir="libs" />
+    <source-file src="src/android/libs/android-brightcove-sdk-4.2.7.jar" target-dir="libs" />
+    <source-file src="src/android/libs/android-brightcove-ima-plugin-4.2.7.jar" target-dir="libs" />
     <source-file src="src/android/libs/ima-android-sdk-beta5.jar" target-dir="libs" />
 
     <!-- layout -->
