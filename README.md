@@ -1,7 +1,7 @@
-Brightcove Player Plugin 
+Brightcove Player Cordova Plugin 
 ======
 
-The `net.nopattern.cordova.brightcoveplayer` object provides functions to make interacting with the native player provided by Brightcove. Player works with Brightcove Video Cloud hosting (so you can play video by Brigthcove ID) and also you can play any video by providing the video URL. Ability to work with IMA Ad also implemented.
+The `net.nopattern.cordova.brightcoveplayer` object provides functions to make interacting with the native player provided by Brightcove for Cordova. Player works with Brightcove Video Cloud hosting (so you can play video by Brigthcove ID) and also you can play any video by providing the video URL. Ability to work with IMA Ad also implemented.
 
     cordova plugin add https://github.com/4screens/brightcove-player-cordova-plugin.git
 
