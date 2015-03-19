@@ -36,6 +36,16 @@ BrightcovePlayerPlugin.init = function(token) {
   );
 };
 
+BrightcovePlayerPlugin.setLanguage = function(lang) {
+  exec(
+    successHandler, 
+    errorHandler, 
+    "BrightcovePlayerPlugin", 
+    "setLanguage", 
+    [lang || null]
+  );
+};
+
 function successHandler(success) {
   console.log(success);
 }

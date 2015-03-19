@@ -32,6 +32,7 @@ import com.google.ads.interactivemedia.v3.api.AdDisplayContainer;
 import com.google.ads.interactivemedia.v3.api.AdsRequest;
 import com.google.ads.interactivemedia.v3.api.CompanionAdSlot;
 import com.google.ads.interactivemedia.v3.api.ImaSdkFactory;
+import com.google.ads.interactivemedia.v3.api.ImaSdkSettings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +58,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
   private String videoId = null;
   private String videoUrl = null;
   private String vast = null;
+  private String imaLang = null;
 
   private String adRulesURL = "http://tvn.adocean.pl/ad.xml?aocodetype=1/predur=46/postdur=46/overdur=65/id=lLs82a1K3Q9SGe_YJEhp0F4LQdvR2IeIUxQUOODMIvb.Z7/tvn_content_category=wideo/tvn_content_category2=castingi/tvn_traffic_tags=zielony/tvn_traffic_category=kobieta,mlodziez/tvn_page=1401747_agustin_zatanczyl_cha_che_z_tomaszem/tvn_device_type=Android";
 
@@ -78,6 +80,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
     videoId = intent.getStringExtra("video-id");
     videoUrl = intent.getStringExtra("video-url");
     vast = intent.getStringExtra("vast-link");
+    imaLang = intent.getStringExtra("ima-language");
 
     Log.d(TAG, "Vast link: " + vast);
 
@@ -153,8 +156,15 @@ public class BrightcoveActivity extends BrightcovePlayer {
   private void setupGoogleIMA() {
 
     final int adFrameId = this.getIdFromResources("ad_frame", ID);
+
     final String vastLink = vast;
+    final String lang = imaLang;
+
     final ProgressBar spinnerInst = spinner;
+    final ImaSdkFactory sdkFactory = ImaSdkFactory.getInstance();
+    final ImaSdkSettings sdkSettings = new ImaSdkSettings();
+
+    sdkSettings.setLanguage(lang);
 
     eventEmitter.on(EventType.DID_PLAY, new EventListener(){
       @Override
@@ -169,8 +179,6 @@ public class BrightcoveActivity extends BrightcovePlayer {
         setupCuePoints((Source) event.properties.get(Event.SOURCE));
       }
     });
-
-    final ImaSdkFactory sdkFactory = ImaSdkFactory.getInstance();
 
     eventEmitter.on(GoogleIMAEventType.DID_START_AD, new EventListener() {
       @Override
@@ -222,6 +230,6 @@ public class BrightcoveActivity extends BrightcovePlayer {
       }
     });
 
-    googleIMAComponent = new GoogleIMAComponent(brightcoveVideoView, eventEmitter);
+    googleIMAComponent = new GoogleIMAComponent(brightcoveVideoView, eventEmitter, sdkSettings);
   }
 }
