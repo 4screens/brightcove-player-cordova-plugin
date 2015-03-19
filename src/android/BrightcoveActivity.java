@@ -117,6 +117,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
         Log.e(TAG, error);
       }
     });
+
     token = null;
     videoId = null;
     vast = null;

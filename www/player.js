@@ -14,8 +14,6 @@ BrightcovePlayerPlugin.playByUrl = function(url, vastLink) {
     "playByUrl", 
     [url, vastLink || null]
   );
-
-  console.log(vastLink || null);
 };
 
 BrightcovePlayerPlugin.playById = function(id, vastLink) {
@@ -26,7 +24,6 @@ BrightcovePlayerPlugin.playById = function(id, vastLink) {
     "playById", 
     [id.toString(), vastLink || null]
   );
-  console.log(vastLink || null);
 };
 
 BrightcovePlayerPlugin.init = function(token) {
