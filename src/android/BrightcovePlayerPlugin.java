@@ -55,12 +55,11 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
 
       Context context = this.cordova.getActivity().getApplicationContext();
       Intent intent = new Intent(context, BrightcoveActivity.class);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
       intent.putExtra("video-url", url);
       intent.putExtra("brightcove-token", this.token);
       intent.putExtra("vast-link", vast);
       intent.putExtra("ima-language", this.imaLang);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       context.startActivity(intent);
 
       callbackContext.success(LOG_TAG + " Playing now with URL: " + url);
@@ -78,12 +77,11 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
 
       Context context = this.cordova.getActivity().getApplicationContext();
       Intent intent = new Intent(context, BrightcoveActivity.class);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
       intent.putExtra("video-id", id);
       intent.putExtra("brightcove-token", this.token);
       intent.putExtra("vast-link", vast);
       intent.putExtra("ima-language", this.imaLang);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       context.startActivity(intent);
 
       callbackContext.success(LOG_TAG + " Playing now with Brightcove ID: " + id);
