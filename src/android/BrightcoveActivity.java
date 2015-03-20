@@ -60,8 +60,6 @@ public class BrightcoveActivity extends BrightcovePlayer {
   private String vast = null;
   private String imaLang = null;
 
-  private String adRulesURL = "http://tvn.adocean.pl/ad.xml?aocodetype=1/predur=46/postdur=46/overdur=65/id=lLs82a1K3Q9SGe_YJEhp0F4LQdvR2IeIUxQUOODMIvb.Z7/tvn_content_category=wideo/tvn_content_category2=castingi/tvn_traffic_tags=zielony/tvn_traffic_category=kobieta,mlodziez/tvn_page=1401747_agustin_zatanczyl_cha_che_z_tomaszem/tvn_device_type=Android";
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     setContentView(this.getIdFromResources(BRIGHTCOVE_ACTIVITY, LAYOUT));
