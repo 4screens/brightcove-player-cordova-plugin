@@ -45,7 +45,7 @@
     <source-file src="src/android/libs/ima-android-sdk-beta5.jar" target-dir="libs" />
 
     <!-- layout -->
-    <source-file src="res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
+    <source-file src="src/android/res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
   </platform>
 
 </plugin>
