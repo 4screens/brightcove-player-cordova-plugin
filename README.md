@@ -35,12 +35,12 @@ Supported Platforms
 
 - Android
 
-BrightcovePlayerPlugin.setLanguge
+BrightcovePlayerPlugin.setLanguage
 =================
 
 Sets the preferred language for the ad UI. This must be a 2-letter ISO 639-1 language code. If invalid or unsupported, the language will default to "en" for English.
 
-    cordova.plugins.Keyboard.BrightcovePlayerPlugin.setLanguage(lang);
+    cordova.plugins.BrightcovePlayerPlugin.setLanguage(lang);
 
 ISO 639-1 list: 
 http://www.loc.gov/standards/iso639-2/php/English_list.php
