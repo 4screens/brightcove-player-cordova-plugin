@@ -3,18 +3,18 @@
 
 @implementation BrightcovePlayerPlugin
 
-NSString *token = nil;
-NSString *lang = nil;
+NSString* token = nil;
+NSString* lang = nil;
 
 - (void)init:(CDVInvokedUrlCommand*)command
 {
   CDVPluginResult* pluginResult = nil;
+  self.token = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
 
-  if ([[command.arguments objectAtIndex:0] isKindOfClass:[NSNull class]]) {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Empty Brightcove token!"];
-  } else{
-    self.token = [command.arguments objectAtIndex:0];
+  if (self.token != nil && [self.token length]) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Inited"];
+  } else{
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Empty Brightcove token!"];
   }
 
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -23,13 +23,12 @@ NSString *lang = nil;
 - (void)setLanguage:(CDVInvokedUrlCommand*)command
 {
   CDVPluginResult* pluginResult = nil;
+  self.lang = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
     
-  if ([[command.arguments objectAtIndex:0] isKindOfClass:[NSNull class]]) {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Please set language!"];
-  } else {
-    self.lang = [command.arguments objectAtIndex:0];
-
+  if (lang != nil && [self.lang length]) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Language inited"];
+  } else {
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Please set language!"];
   }
 
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -38,17 +37,12 @@ NSString *lang = nil;
 - (void)playByUrl:(CDVInvokedUrlCommand*)command
 {
   CDVPluginResult* pluginResult = nil;
+  NSString* url = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
     
-  if ([[command.arguments objectAtIndex:0] isKindOfClass:[NSNull class]]) {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL is empty!"];
+  if (url != nil && [url length] && [self validateUrl:url]) {
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with URL: %@", url]];
   } else {
-    NSString* url = [command.arguments objectAtIndex:0];
-      
-    if ([self validateUrl:url]) {
-      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with URL: %@", url]];
-    } else {
-      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL is not valid!"];
-    }
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL is not valid or empty!"];
   }
 
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -61,15 +55,12 @@ NSString *lang = nil;
     if (self.token == nil && ![self.token length]) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Please init the brightcove with token!"];
     } else {
+      NSString* videoId = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
     
-      if ([[command.arguments objectAtIndex:0] isKindOfClass:[NSNull class]]) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Empty video ID!"];
+      if (videoId != nil && [videoId length]) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with Brightcove ID: %@", videoId]];
       } else {
-        NSString* url = [command.arguments objectAtIndex:0];
-        
-        if ([self validateUrl:url]) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with Brightcove ID: %@", url]];
-        }
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Empty video ID!"];
       }
     }
     
