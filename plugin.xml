@@ -48,4 +48,16 @@
     <source-file src="src/android/res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
   </platform>
 
+  <!-- ios -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="BrightcovePlayerPlugin">
+        <param name="ios-package" value="BrightcovePlayerPlugin" onload="true" />
+      </feature>
+    </config-file>
+
+    <header-file src="src/ios/BrightcovePlayer.h" />
+    <source-file src="src/ios/BrightcovePlayer.m" />
+  </platform>
+
 </plugin>
