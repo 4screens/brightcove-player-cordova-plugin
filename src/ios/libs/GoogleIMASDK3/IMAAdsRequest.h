@@ -19,11 +19,6 @@
 /// The user context.
 @property(nonatomic, readonly) id userContext;
 
-/// Specifies whether the player intends to start the content and ad in
-/// response to a user action or whether they will be automatically played.
-/// Changing this setting will have no impact on ad playback.
-@property(nonatomic) BOOL adWillAutoPlay;
-
 /// Initializes an ads request instance with the |adTagUrl| and
 /// |adDisplayContainer| specified.
 - (instancetype)initWithAdTagUrl:(NSString *)adTagUrl

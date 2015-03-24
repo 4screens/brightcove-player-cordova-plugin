@@ -1,10 +1,21 @@
-#import "BrightcovePlayer.h"
-#import <Cordova/CDV.h>
+#import "BrightcovePlugin.h"
 
 @implementation BrightcovePlayerPlugin
 
 NSString* token = nil;
 NSString* lang = nil;
+BrightcovePluginViewController *brightcoveView = nil;
+UIStoryboard *storyboard = nil;
+
+- (void)initBrightcoveView
+{
+  UIStoryboard *storyboardTemp = [UIStoryboard storyboardWithName:@"BrightcovePlugin"
+                                                  bundle:nil];
+  self.storyboard = storyboardTemp;
+    
+  BrightcovePluginViewController *brightcoveViewTemp = [self.storyboard instantiateInitialViewController];
+  self.brightcoveView = brightcoveViewTemp;
+}
 
 - (void)init:(CDVInvokedUrlCommand*)command
 {
@@ -39,6 +50,9 @@ NSString* lang = nil;
   CDVPluginResult* pluginResult = nil;
   NSString* url = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
     
+  [self initBrightcoveView];
+  [self.viewController showViewController:self.brightcoveView sender:self.viewController];
+    
   if (url != nil && [url length] && [self validateUrl:url]) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with URL: %@", url]];
   } else {
@@ -66,6 +80,8 @@ NSString* lang = nil;
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
+
+#pragma mark - Helper_Methods
 
 - (BOOL)validateUrl:(NSString *)url {
   NSURL *testURL = [NSURL URLWithString:url];

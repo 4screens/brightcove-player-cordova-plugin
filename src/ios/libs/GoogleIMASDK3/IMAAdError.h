@@ -1,12 +1,11 @@
-/*! \file IMAAdError.h
- *  GoogleIMA3
- *
- *  Copyright (c) 2013 Google Inc. All rights reserved.
- *
- *  This file provides error codes that are raised by the SDK and
- *  declares the IMAAdError class.
- *
- */
+//
+//  IMAAdError.h
+//  GoogleIMA3
+//
+//  Copyright (c) 2013 Google Inc. All rights reserved.
+//
+//  This file provides error codes that are raised by the SDK and
+//  declares the IMAAdError class.
 
 #import <Foundation/Foundation.h>
 

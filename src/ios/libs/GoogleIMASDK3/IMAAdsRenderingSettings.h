@@ -20,26 +20,15 @@ extern const int kIMAAutodetectBitrate;
 @optional
 
 /// Called when Safari is about to be opened.
-- (void)webOpenerWillOpenExternalBrowser:(NSObject *)webOpener;
-/// Called before in-app browser opens.
-- (void)webOpenerWillOpenInAppBrowser:(NSObject *)webOpener;
-/// Called when the in app browser is shown on the screen.
-- (void)webOpenerDidOpenInAppBrowser:(NSObject *)webOpener;
-/// Called when in-app browser is about to close.
-- (void)webOpenerWillCloseInAppBrowser:(NSObject *)webOpener;
-/// Called when in-app browser finishes closing.
-- (void)webOpenerDidCloseInAppBrowser:(NSObject *)webOpener;
-
-/// @deprecated Replaced by webOpenerWillOpenExternalBrowser:
 - (void)willOpenExternalBrowser;
-/// @deprecated Replaced by webOpenerWillOpenInAppBrowser:
+/// Called before in-app browser opens.
 - (void)willOpenInAppBrowser;
-/// @deprecated Replaced by webOpenerDidOpenInAppBrowser:
-- (void)didOpenInAppBrowser;
-/// @deprecated Replaced by webOpenerWillCloseInAppBrowser:
-- (void)willCloseInAppBrowser;
-/// @deprecated Replaced by webOpenerDidCloseInAppBrowser:
+/// Called when in-app browser finishes closing.
 - (void)didCloseInAppBrowser;
+/// Called when the in app browser is shown on the screen.
+- (void)didOpenInAppBrowser;
+/// Called when in-app browser is about to close.
+- (void)willCloseInAppBrowser;
 
 @end
 
@@ -59,10 +48,6 @@ extern const int kIMAAutodetectBitrate;
 /// Default value, |kIMAAutodetectBitrate|, means the bitrate will be selected
 /// by the SDK, using the currently detected network speed (cellular or Wi-Fi).
 @property(nonatomic, assign) int bitrate;
-
-/// Specifies the list of UI elements that should be visible.
-/// This property may be ignored for AdSense/AdX ads.
-@property(nonatomic, strong) NSArray *uiElements;
 
 /// Specifies the optional UIViewController that will be used to present an
 /// in-app browser.

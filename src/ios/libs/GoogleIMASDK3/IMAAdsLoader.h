@@ -26,17 +26,6 @@
 /// to the IMAAdsLoader will be ignored and a warning will be logged.
 @property(nonatomic, copy) NSString *language;
 
-/// Specifies maximum number of redirects after which subsequent redirects will
-/// be denied, and the ad load aborted. The number of redirects directly affects
-/// latency and thus user experience. This applies to all VAST wrapper ads. If
-/// the number of redirects exceeds |maxRedirects|, the ad request will fail with
-/// error code 302. The default value is 4.
-@property(nonatomic) NSUInteger maxRedirects;
-
-/// Specifies whether to automatically play VMAP and ad rules ad breaks. The
-/// default is YES.
-@property(nonatomic) BOOL autoPlayAdBreaks;
-
 @end
 
 #pragma mark IMAAdsLoadedData

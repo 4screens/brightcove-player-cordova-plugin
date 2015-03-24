@@ -57,8 +57,13 @@
     </config-file>
 
     <!-- src -->
-    <header-file src="src/ios/BrightcovePlayer.h" />
-    <source-file src="src/ios/BrightcovePlayer.m" />
+    <header-file src="src/ios/BrightcovePlugin.h" />
+    <source-file src="src/ios/BrightcovePlugin.m" />
+
+    <header-file src="src/ios/BrightcovePluginViewController.h" />
+    <source-file src="src/ios/BrightcovePluginViewController.m" />
+
+    <resource-file src="src/ios/BrightcovePlugin.storyboard" />
 
     <!-- libs -->
     <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVAdvertising.h" />
@@ -80,13 +85,13 @@
     <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVSource.h" />
     <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVVideo.h" />
     <header-file src="src/ios/libs/BrightcoveSDK/Headers/NSDictionary+BCOVURLSupport.h" />
-    <source-file src="src/ios/libs/BrightcoveSDK/Library/libBCOVPlayerSDK.a" />
+    <source-file src="src/ios/libs/BrightcoveSDK/Library/libBCOVPlayerSDK.a" framework="true" compiler-flags="-ObjC"  />
 
     <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMA.h" />
     <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMAAdsRequestPolicy.h" />
     <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMAComponent.h" />
     <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMASessionProvider.h" />
-    <source-file src="src/ios/libs/BrightcoveIMA/Library/libBCOVIMA.a" />
+    <source-file src="src/ios/libs/BrightcoveIMA/Library/libBCOVIMA.a" framework="true" compiler-flags="-ObjC"  />
 
     <header-file src="src/ios/libs/GoogleIMASDK3/IMAAd.h" />
     <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdDisplayContainer.h" />
@@ -102,8 +107,10 @@
     <header-file src="src/ios/libs/GoogleIMASDK3/IMACompanionAdSlot.h" />
     <header-file src="src/ios/libs/GoogleIMASDK3/IMAContentPlayhead.h" />
     <header-file src="src/ios/libs/GoogleIMASDK3/IMAUiElements.h" />
-    <source-file src="src/ios/libs/GoogleIMASDK3/libGoogleIMA3.a" />
-    <source-file src="src/ios/libs/GoogleIMASDK3/libGoogleIMA3ForAdMob.a" />
+    <source-file src="src/ios/libs/GoogleIMASDK3/libGoogleIMA3.a" framework="true" compiler-flags="-ObjC" />
+
+    <framework src="src/ios/libs/SystemConfiguration.framework" weak="true" />
+    <framework src="src/ios/libs/AdSupport.framework" weak="true" />
   </platform>
 
 </plugin>

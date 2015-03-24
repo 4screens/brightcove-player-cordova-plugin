@@ -1,11 +1,11 @@
-/*! \file IMAAdEvent.h
- *  GoogleIMA3
- *
- *  Copyright (c) 2013 Google Inc. All rights reserved.
- *
- *  Defines a data object used to convey information during ad playback.
- *  This object is sent to the IMAAdsManager delegate.
- */
+//
+//  IMAAdEvent.h
+//  GoogleIMA3
+//
+//  Copyright (c) 2013 Google Inc. All rights reserved.
+//
+//  Defines a data object used to convey information during ad playback.
+//  This object is sent to the IMAAdsManager delegate.
 
 #import <Foundation/Foundation.h>
 
@@ -13,8 +13,6 @@
 
 /// Different event types sent by the IMAAdsManager to its delegate.
 typedef enum {
-  /// Ad break ready.
-  kIMAAdEvent_AD_BREAK_READY,
   /// All ads managed by the ads manager have completed.
   kIMAAdEvent_ALL_ADS_COMPLETED,
   /// Ad clicked.
@@ -31,14 +29,10 @@ typedef enum {
   kIMAAdEvent_PAUSE,
   /// Ad resumed.
   kIMAAdEvent_RESUME,
-  /// Ad has skipped.
-  kIMAAdEvent_SKIPPED,
-  /// Ad has started.
-  kIMAAdEvent_STARTED,
-  /// Ad tapped.
-  kIMAAdEvent_TAPPED,
   /// Third quartile of a linear ad was reached.
-  kIMAAdEvent_THIRD_QUARTILE
+  kIMAAdEvent_THIRD_QUARTILE,
+  // Ad has started.
+  kIMAAdEvent_STARTED
 } IMAAdEventType;
 
 /// Simple data class used to transport ad playback information.

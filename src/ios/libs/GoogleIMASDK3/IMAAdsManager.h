@@ -67,15 +67,10 @@
 /// The implementing code should resume the content playback.
 - (void)adsManagerDidRequestContentResume:(IMAAdsManager *)adsManager;
 
-@optional
-/// @deprecated Replaced by adsManager:adDidProgressToTime:totalTime:
+ @optional
+/// Called providing time updates with the current ad time every 200ms.
 - (void)adDidProgressToTime:(NSTimeInterval)mediaTime
                   totalTime:(NSTimeInterval)totalTime;
-
-/// Called every 200ms to provide time updates for the current ad.
-- (void)adsManager:(IMAAdsManager *)adsManager
-    adDidProgressToTime:(NSTimeInterval)mediaTime
-              totalTime:(NSTimeInterval)totalTime;
 
 @end
 
@@ -115,9 +110,6 @@
 
 /// Resumes the advertisement.
 - (void)resume;
-
-/// Skips the advertisement.
-- (void)skip;
 
 /// Causes the ads manager to stop the ad and clean its internal state.
 - (void)destroy;

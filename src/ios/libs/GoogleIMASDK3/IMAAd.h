@@ -22,7 +22,7 @@
 @property(nonatomic, readonly) NSString *adTitle;
 
 /// The ad description.
-@property(nonatomic, readonly) NSString *adDescription;
+@property(nonatomic, readonly) NSString *description;
 
 /// Content type of the currently selected creative. For linear creatives
 /// returns the content type of the currently selected media file. Returns
@@ -31,9 +31,6 @@
 
 /// The duration of the ad from the VAST response.
 @property(nonatomic, readonly) NSTimeInterval duration;
-
-/// The UI elements that will be displayed during ad playback.
-@property(nonatomic, readonly) NSArray *uiElements;
 
 /// The size of the ad asset. For non-linear ads, this is the actual width and
 /// height of the ad representation. For linear ads, since
