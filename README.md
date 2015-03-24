@@ -28,7 +28,7 @@ BrightcovePlayerPlugin.init
 
 This method make accessable the ability to get video by brightcove ID. You must provide your Brigthcove Token as parameter.
 
-    cordova.plugins.Keyboard.BrightcovePlayerPlugin.init(brightcoveToken);
+    cordova.plugins.BrightcovePlayerPlugin.init(brightcoveToken);
 
 Supported Platforms
 -------------------
@@ -55,11 +55,11 @@ BrightcovePlayerPlugin.playById
 
 Play video by Brightcove Video ID. You must init the brightcove before using with BrightcovePlayerPlugin.init!
 
-    cordova.plugins.Keyboard.BrightcovePlayerPlugin.playById(brigthcoveVideoId);
+    cordova.plugins.BrightcovePlayerPlugin.playById(brigthcoveVideoId);
 
 Also if you want to preroll Ad before your video just provide Vast link as the second parameter.
 
-    cordova.plugins.Keyboard.BrightcovePlayerPlugin.playById(brigthcoveVideoId, vastLink);
+    cordova.plugins.BrightcovePlayerPlugin.playById(brigthcoveVideoId, vastLink);
 
 Supported Platforms
 -------------------
@@ -71,11 +71,11 @@ BrightcovePlayerPlugin.playByUrl
 
 Play video by URL. There is no need in init.
 
-    cordova.plugins.Keyboard.BrightcovePlayerPlugin.playByUrl(videoUrl);
+    cordova.plugins.BrightcovePlayerPlugin.playByUrl(videoUrl);
 
 Also if you want to preroll Ad before your video like in playById just provide Vast link as the second parameter.
 
-    cordova.plugins.Keyboard.BrightcovePlayerPlugin.playByUrl(videoUrl, vastLink);
+    cordova.plugins.BrightcovePlayerPlugin.playByUrl(videoUrl, vastLink);
 
 Supported Platforms
 -------------------
