@@ -56,6 +56,10 @@
       </feature>
     </config-file>
 
+    <config-file target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
+      <false/>
+    </config-file>
+
     <!-- src -->
     <header-file src="src/ios/BrightcovePlugin.h" />
     <source-file src="src/ios/BrightcovePlugin.m" />

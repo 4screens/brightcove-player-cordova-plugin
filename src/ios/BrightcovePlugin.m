@@ -9,13 +9,22 @@ UIStoryboard *storyboard = nil;
 
 - (void)initBrightcoveView
 {
-  UIStoryboard *storyboardTemp = [UIStoryboard storyboardWithName:@"BrightcovePlugin"
+    if (self.brightcoveView == nil) {
+        UIStoryboard *storyboardTemp = [UIStoryboard storyboardWithName:@"BrightcovePlugin"
                                                   bundle:nil];
-  self.storyboard = storyboardTemp;
+        self.storyboard = storyboardTemp;
     
-  BrightcovePluginViewController *brightcoveViewTemp = [self.storyboard instantiateInitialViewController];
-  self.brightcoveView = brightcoveViewTemp;
+        self.brightcoveView = [self.storyboard instantiateInitialViewController];
+        self.brightcoveView.kViewControllerIMALanguage = self.lang;
+        self.brightcoveView.kViewControllerCatalogToken = self.token;
+    } else {
+        self.brightcoveView.kViewControllerIMALanguage = self.lang;
+        self.brightcoveView.kViewControllerCatalogToken = self.token;
+        [self.brightcoveView setup];
+    }
 }
+
+#pragma mark - Cordova Methods
 
 - (void)init:(CDVInvokedUrlCommand*)command
 {
@@ -36,7 +45,7 @@ UIStoryboard *storyboard = nil;
   CDVPluginResult* pluginResult = nil;
   self.lang = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
     
-  if (lang != nil && [self.lang length]) {
+  if (self.lang != nil && [self.lang length]) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Language inited"];
   } else {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Please set language!"];
@@ -62,6 +71,16 @@ UIStoryboard *storyboard = nil;
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)setVideoId:(NSString *)videoId
+{
+    self.brightcoveView.kViewControllerPlaylistID = videoId;
+}
+
+- (void)setVast:(NSString *)vastLink
+{
+    self.brightcoveView.kViewControllerIMAVMAPResponseAdTag = vastLink;
+}
+
 - (void)playById:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
@@ -72,6 +91,9 @@ UIStoryboard *storyboard = nil;
       NSString* videoId = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
     
       if (videoId != nil && [videoId length]) {
+        [self initBrightcoveView];
+        self.brightcoveView.kViewControllerPlaylistID = videoId;
+        [self.viewController showViewController:self.brightcoveView sender:self.viewController];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with Brightcove ID: %@", videoId]];
       } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Empty video ID!"];
