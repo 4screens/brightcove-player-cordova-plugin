@@ -11,4 +11,5 @@
 @property NSString * kViewControllerPlaylistID;
 @property NSString * kViewControllerIMALanguage;
 @property NSString * kViewControllerIMAVMAPResponseAdTag;
+@property NSString * kViewControllerVideoURL;
 @end

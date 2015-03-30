@@ -45,7 +45,7 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 
 - (void)viewDidLoad
 {
-    NSLog(@"VideoID: %@, Token: %@, Lang: %@, Vast: %@", self.kViewControllerPlaylistID, self.kViewControllerCatalogToken, self.kViewControllerIMALanguage, self.kViewControllerIMAVMAPResponseAdTag);
+    NSLog(@"VideoID: %@, Token: %@, Lang: %@, Vast: %@, VideoURL: %@", self.kViewControllerPlaylistID, self.kViewControllerCatalogToken, self.kViewControllerIMALanguage, self.kViewControllerIMAVMAPResponseAdTag, self.kViewControllerVideoURL);
     if (self.kViewControllerIMAVMAPResponseAdTag != nil && [self.kViewControllerIMAVMAPResponseAdTag length]) {
         kViewControllerIMAVMAPResponseAdTag = self.kViewControllerIMAVMAPResponseAdTag;
     }
@@ -60,16 +60,6 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     self.playbackController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.videoContainer insertSubview:self.playbackController.view atIndex:0];
-    
-    [self requestContentFromCatalog];
-}
-
-- (void)viewDidAppear
-{
-    NSLog(@"Playlist ID: %@", self.kViewControllerPlaylistID);
-    if (self.kViewControllerIMAVMAPResponseAdTag != nil && [self.kViewControllerIMAVMAPResponseAdTag length]) {
-        kViewControllerIMAVMAPResponseAdTag = self.kViewControllerIMAVMAPResponseAdTag;
-    }
 }
 
 - (void)setup
@@ -98,7 +88,14 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
     
-    self.catalogService = [[BCOVCatalogService alloc] initWithToken:self.kViewControllerCatalogToken];
+    if (self.kViewControllerCatalogToken != nil && [self.kViewControllerCatalogToken length] && self.kViewControllerPlaylistID != nil && [self.kViewControllerPlaylistID length])
+    {
+      self.catalogService = [[BCOVCatalogService alloc] initWithToken:self.kViewControllerCatalogToken];
+      [self requestContentFromCatalog];
+    } else if (self.kViewControllerVideoURL != nil && [self.kViewControllerVideoURL length]){
+      [self playVideoFromUrl];
+    }
+    
 
     [self resumeAdAfterForeground];
 }
@@ -114,22 +111,38 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 
         if (strongSelf.adIsPlaying && !strongSelf.isBrowserOpen)
         {
-            [strongSelf.playbackController resumeAd];
+          [strongSelf.playbackController resumeAd];
         }
 
     }];
 }
 
+#pragma mark Data manipulation methods
+
+- (void)playVideoFromUrl
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    NSURL *videoUrl = [[NSURL alloc] initWithString:self.kViewControllerVideoURL];
+    
+    BCOVSource *source = [[BCOVSource alloc] initWithURL:videoUrl];
+    
+    BCOVVideo *video = [[BCOVVideo alloc] initWithSource:source cuePoints:nil properties:[NSDictionary dictionary]];
+    
+    NSMutableArray *videoArray = [self retrieveVideoArray:video];
+    
+    [self.playbackController setVideos:videoArray];
+}
+
 - (void)requestContentFromCatalog
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-
+    
     [self.catalogService findVideoWithReferenceID:self.kViewControllerPlaylistID parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
-
+        
         if (video)
         {
-            NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:1];
-            [videoArray addObject:[BrightcovePluginViewController updateVideoWithVMAPTag:video]];
+            NSMutableArray *videoArray = [self retrieveVideoArray:video];
             [self.playbackController setVideos:videoArray];
         }
         else
@@ -140,10 +153,21 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     }];
 }
 
+- (NSMutableArray *)retrieveVideoArray:(BCOVVideo *)video{
+    NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:1];
+    if (self.kViewControllerIMAVMAPResponseAdTag != nil && [self.kViewControllerIMAVMAPResponseAdTag length])
+    {
+        [videoArray addObject:[BrightcovePluginViewController updateVideoWithVMAPTag:video]];
+    } else {
+        [videoArray addObject:video];
+    }
+    
+    return videoArray;
+}
+
 + (BCOVVideo *)updateVideoWithVMAPTag:(BCOVVideo *)video
 {
     return [video update:^(id<BCOVMutableVideo> mutableVideo) {
-        NSLog(@"Vast in work: %@", kViewControllerIMAVMAPResponseAdTag);
 
         NSDictionary *adProperties = @{ kBCOVIMAAdTag : kViewControllerIMAVMAPResponseAdTag };
 
@@ -201,6 +225,11 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     self.playbackController = nil;
     self.notificationReceipt = nil;
     self.catalogService = nil;
+    self.kViewControllerIMAVMAPResponseAdTag = nil;
+    self.kViewControllerPlaylistID = nil;
+    self.kViewControllerVideoURL = nil;
+    self.kViewControllerCatalogToken = nil;
+    self.kViewControllerIMALanguage = nil;
 }
 
 - (IBAction)dismissVideoView:(id)sender

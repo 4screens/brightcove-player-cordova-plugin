@@ -57,11 +57,16 @@ UIStoryboard *storyboard = nil;
 - (void)playByUrl:(CDVInvokedUrlCommand*)command
 {
   CDVPluginResult* pluginResult = nil;
+    
   NSString* url = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
   NSString* vastLink = [command argumentAtIndex:1 withDefault:@"" andClass:[NSString class]];
     
   if (url != nil && [url length] && [self validateUrl:url]) {
     [self initBrightcoveView];
+    [self setVideoUrl:url];
+    if (vastLink != nil && [vastLink length]){
+      [self setVast:vastLink];
+    }
     [self.viewController showViewController:self.brightcoveView sender:self.viewController];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with URL: %@", url]];
   } else {
@@ -111,6 +116,11 @@ UIStoryboard *storyboard = nil;
 - (void)setVideoId:(NSString *)videoId
 {
     self.brightcoveView.kViewControllerPlaylistID = videoId;
+}
+
+- (void)setVideoUrl:(NSString *)videoUrl
+{
+    self.brightcoveView.kViewControllerVideoURL = videoUrl;
 }
 
 - (void)setVast:(NSString *)vastLink
