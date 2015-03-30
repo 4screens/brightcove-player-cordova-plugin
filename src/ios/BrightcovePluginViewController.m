@@ -128,7 +128,8 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 
         if (video)
         {
-            NSArray *videoArray = @[video];
+            NSMutableArray *videoArray = [NSMutableArray arrayWithCapacity:1];
+            [videoArray addObject:[BrightcovePluginViewController updateVideoWithVMAPTag:video]];
             [self.playbackController setVideos:videoArray];
         }
         else
@@ -142,6 +143,7 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 + (BCOVVideo *)updateVideoWithVMAPTag:(BCOVVideo *)video
 {
     return [video update:^(id<BCOVMutableVideo> mutableVideo) {
+        NSLog(@"Vast in work: %@", kViewControllerIMAVMAPResponseAdTag);
 
         NSDictionary *adProperties = @{ kBCOVIMAAdTag : kViewControllerIMAVMAPResponseAdTag };
 

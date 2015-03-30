@@ -58,27 +58,17 @@ UIStoryboard *storyboard = nil;
 {
   CDVPluginResult* pluginResult = nil;
   NSString* url = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
-    
-  [self initBrightcoveView];
-  [self.viewController showViewController:self.brightcoveView sender:self.viewController];
+  NSString* vastLink = [command argumentAtIndex:1 withDefault:@"" andClass:[NSString class]];
     
   if (url != nil && [url length] && [self validateUrl:url]) {
+    [self initBrightcoveView];
+    [self.viewController showViewController:self.brightcoveView sender:self.viewController];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with URL: %@", url]];
   } else {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL is not valid or empty!"];
   }
 
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-}
-
-- (void)setVideoId:(NSString *)videoId
-{
-    self.brightcoveView.kViewControllerPlaylistID = videoId;
-}
-
-- (void)setVast:(NSString *)vastLink
-{
-    self.brightcoveView.kViewControllerIMAVMAPResponseAdTag = vastLink;
 }
 
 - (void)playById:(CDVInvokedUrlCommand*)command
@@ -89,10 +79,13 @@ UIStoryboard *storyboard = nil;
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Please init the brightcove with token!"];
     } else {
       NSString* videoId = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
-    
+      NSString* vastLink = [command argumentAtIndex:1 withDefault:@"" andClass:[NSString class]];
       if (videoId != nil && [videoId length]) {
         [self initBrightcoveView];
-        self.brightcoveView.kViewControllerPlaylistID = videoId;
+        [self setVideoId:videoId];
+        if (vastLink != nil && [vastLink length]){
+          [self setVast:vastLink];
+        }
         [self.viewController showViewController:self.brightcoveView sender:self.viewController];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with Brightcove ID: %@", videoId]];
       } else {
@@ -113,6 +106,16 @@ UIStoryboard *storyboard = nil;
   else {
     return YES;
   }
+}
+
+- (void)setVideoId:(NSString *)videoId
+{
+    self.brightcoveView.kViewControllerPlaylistID = videoId;
+}
+
+- (void)setVast:(NSString *)vastLink
+{
+    self.brightcoveView.kViewControllerIMAVMAPResponseAdTag = vastLink;
 }
 
 @end
