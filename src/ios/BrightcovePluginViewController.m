@@ -17,7 +17,7 @@
 @property (nonatomic, assign) BOOL isBrowserOpen;
 @property (nonatomic, strong) id<NSObject> notificationReceipt;
 @property BCOVPlayerSDKManager *manager;
-
+@property UIActivityIndicatorView *activityView;
 
 - (void)requestContentFromCatalog;
 
@@ -45,6 +45,9 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 
 - (void)viewDidLoad
 {
+    
+    [self createSpinner];
+    
     NSLog(@"VideoID: %@, Token: %@, Lang: %@, Vast: %@, VideoURL: %@", self.kViewControllerPlaylistID, self.kViewControllerCatalogToken, self.kViewControllerIMALanguage, self.kViewControllerIMAVMAPResponseAdTag, self.kViewControllerVideoURL);
     if (self.kViewControllerIMAVMAPResponseAdTag != nil && [self.kViewControllerIMAVMAPResponseAdTag length]) {
         kViewControllerIMAVMAPResponseAdTag = self.kViewControllerIMAVMAPResponseAdTag;
@@ -192,6 +195,7 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     if ([type isEqualToString:kBCOVIMALifecycleEventAdsLoaderLoaded])
     {
         NSLog(@"BrightcovePluginViewController Debug - Ads loaded.");
+        [self.view addSubview:self.activityView];
     }
     else if ([type isEqualToString:kBCOVIMALifecycleEventAdsManagerDidReceiveAdEvent])
     {
@@ -201,22 +205,41 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
         {
             case kIMAAdEvent_STARTED:
                 NSLog(@"BrightcovePluginViewController Debug - Ad Started.");
+                [self.activityView removeFromSuperview];
                 self.adIsPlaying = YES;
                 break;
             case kIMAAdEvent_COMPLETE:
                 NSLog(@"BrightcovePluginViewController Debug - Ad Completed.");
+                [self.view addSubview:self.activityView];
                 self.adIsPlaying = NO;
                 break;
             case kIMAAdEvent_ALL_ADS_COMPLETED:
                 NSLog(@"BrightcovePluginViewController Debug - All ads completed.");
                 break;
+            case kIMAAdEvent_LOADED:
+                [self.view addSubview:self.activityView];
+                break;
             default:
                 break;
         }
     }
+    else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPlay]){
+      [self.activityView removeFromSuperview];
+    }
 }
 
 #pragma mark UI Styling
+
+- (void)createSpinner
+{
+    self.activityView = [[UIActivityIndicatorView alloc]
+                         initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    self.activityView.center=self.view.center;
+    [self.activityView startAnimating];
+    [self.view addSubview:self.activityView];
+    self.activityView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleBottomMargin;
+}
 
 - (void)clearInstance{
     self.view = nil;
