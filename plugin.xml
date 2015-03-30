@@ -48,4 +48,73 @@
     <source-file src="src/android/res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
   </platform>
 
+  <!-- ios -->
+  <platform name="ios">
+    <config-file target="config.xml" parent="/*">
+      <feature name="BrightcovePlayerPlugin">
+        <param name="ios-package" value="BrightcovePlayerPlugin" onload="true" />
+      </feature>
+    </config-file>
+
+    <config-file target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
+      <false/>
+    </config-file>
+
+    <!-- src -->
+    <header-file src="src/ios/BrightcovePlugin.h" />
+    <source-file src="src/ios/BrightcovePlugin.m" />
+
+    <header-file src="src/ios/BrightcovePluginViewController.h" />
+    <source-file src="src/ios/BrightcovePluginViewController.m" />
+
+    <resource-file src="src/ios/BrightcovePlugin.storyboard" />
+
+    <!-- libs -->
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVAdvertising.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVBasicSessionProvider.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVCatalogConstants.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVCatalogService.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVCuePoint.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVCuePointCollection.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVCuePointProgressPolicy.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVMediaRequestFactory.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlaybackController.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlaybackService.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlaybackServiceRequestFactory.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlaybackSession.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlaybackSessionProvider.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlayerSDK.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlayerSDKManager.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVPlaylist.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVSource.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/BCOVVideo.h" />
+    <header-file src="src/ios/libs/BrightcoveSDK/Headers/NSDictionary+BCOVURLSupport.h" />
+    <source-file src="src/ios/libs/BrightcoveSDK/Library/libBCOVPlayerSDK.a" framework="true" compiler-flags="-ObjC"  />
+
+    <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMA.h" />
+    <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMAAdsRequestPolicy.h" />
+    <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMAComponent.h" />
+    <header-file src="src/ios/libs/BrightcoveIMA/Headers/BCOVIMASessionProvider.h" />
+    <source-file src="src/ios/libs/BrightcoveIMA/Library/libBCOVIMA.a" framework="true" compiler-flags="-ObjC"  />
+
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAd.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdDisplayContainer.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdError.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdEvent.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdPlaybackInfo.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdPodInfo.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdsLoader.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdsManager.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdsRenderingSettings.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAdsRequest.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAAVPlayerContentPlayhead.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMACompanionAdSlot.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAContentPlayhead.h" />
+    <header-file src="src/ios/libs/GoogleIMASDK3/IMAUiElements.h" />
+    <source-file src="src/ios/libs/GoogleIMASDK3/libGoogleIMA3.a" framework="true" compiler-flags="-ObjC" />
+
+    <framework src="src/ios/libs/SystemConfiguration.framework" weak="true" />
+    <framework src="src/ios/libs/AdSupport.framework" weak="true" />
+  </platform>
+
 </plugin>

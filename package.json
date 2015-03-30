@@ -10,7 +10,8 @@
         "Player"
     ],
     "platforms": [
-        "android"
+        "android",
+        "ios"
     ],
     "engines": []
 }
