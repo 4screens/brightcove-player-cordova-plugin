@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="net.nopattern.cordova.brightcoveplayer"
-    version="0.0.1">
+    version="1.0.0">
     <name>BrightcovePlayerPlugin</name>
     <description>Brightcove Native Player for Cordova</description>
     <license>Apache 2.0</license>

@@ -34,6 +34,7 @@ Supported Platforms
 -------------------
 
 - Android
+- iOS
 
 BrightcovePlayerPlugin.setLanguage
 =================
@@ -49,6 +50,7 @@ Supported Platforms
 -------------------
 
 - Android
+- iOS
 
 BrightcovePlayerPlugin.playById
 =================
@@ -65,6 +67,7 @@ Supported Platforms
 -------------------
 
 - Android
+- iOS
 
 BrightcovePlayerPlugin.playByUrl
 =================
@@ -81,6 +84,13 @@ Supported Platforms
 -------------------
 
 - Android
+- iOS
+
+TO DO
+===================
+
+- Play events trigger to JS
+- Localization for "Done" button
 
 
 

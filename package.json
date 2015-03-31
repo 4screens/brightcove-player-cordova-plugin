@@ -1,5 +1,5 @@
 {
-    "version": "0.0.1",
+    "version": "1.0.0",
     "name": "net.nopattern.cordova.brightcoveplayer",
     "cordova_name": "BrightcovePlayerPlugin",
     "description": "Brightcove Native Player for Cordova",
