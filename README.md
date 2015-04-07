@@ -20,8 +20,90 @@ Properties
 
 Events
 --------
+These events are fired on the window.
 
+- #### brightcovePlayer.show
 
+  Fired on player shown
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.hide
+
+  Fired on player hide
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.play
+
+  Fired on player play
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.pause
+
+  Fired on player pause
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.ended
+
+  Fired on video ended
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.buffering
+
+  Fired on video buffering
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.adStarted
+
+  Fired on Ad started
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.adCompleted
+
+  Fired on Ad completed
+
+  ###### Supported Platforms
+
+  - iOS
+  - Android
+
+- #### brightcovePlayer.seeked
+
+  Fired after video seeked
+
+  ###### Supported Platforms
+
+  - Android
+
+Methods description 
+======
 
 BrightcovePlayerPlugin.init
 =================
@@ -89,7 +171,6 @@ Supported Platforms
 TO DO
 ===================
 
-- Play events trigger to JS
 - Localization for "Done" button
 
 
