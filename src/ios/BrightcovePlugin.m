@@ -15,6 +15,7 @@ UIStoryboard *storyboard = nil;
         self.storyboard = storyboardTemp;
     
         self.brightcoveView = [self.storyboard instantiateInitialViewController];
+        self.brightcoveView.delegate = self;
         self.brightcoveView.kViewControllerIMALanguage = self.lang;
         self.brightcoveView.kViewControllerCatalogToken = self.token;
     } else {
@@ -22,6 +23,60 @@ UIStoryboard *storyboard = nil;
         self.brightcoveView.kViewControllerCatalogToken = self.token;
         [self.brightcoveView setup];
     }
+    [self playerShown];
+}
+
+#pragma mark - Cordova Events
+
+- (void) playerHidden
+{
+  [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.hide')"]];
+}
+
+- (void) playerShown
+{
+  [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.show')"]];
+}
+
+- (void) playVideo
+{
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play')"]];
+}
+
+- (void) pauseVideo
+{
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.pause')"]];
+}
+
+- (void) bufferingVideo
+{
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.buffering')"]];
+}
+
+- (void)seekingVideo
+{}
+
+- (void)seekedVideo
+{}
+
+- (void)endedVideo
+{
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.ended')"]];    
+}
+
+- (void)adStarted
+{
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.adStarted')"]];
+}
+
+- (void)adCompleted
+{
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.adCompleted')"]];
+}
+
+- (void)allAdsCompleted
+{
+
 }
 
 #pragma mark - Cordova Methods

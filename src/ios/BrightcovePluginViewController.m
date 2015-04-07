@@ -3,9 +3,6 @@
 #import "BrightcovePluginViewController.h"
 
 
-// ** Customize these values with your own account information **
-
-
 @interface BrightcovePluginViewController () <BCOVPlaybackControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
@@ -48,7 +45,6 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     
     [self createSpinner];
     
-    NSLog(@"VideoID: %@, Token: %@, Lang: %@, Vast: %@, VideoURL: %@", self.kViewControllerPlaylistID, self.kViewControllerCatalogToken, self.kViewControllerIMALanguage, self.kViewControllerIMAVMAPResponseAdTag, self.kViewControllerVideoURL);
     if (self.kViewControllerIMAVMAPResponseAdTag != nil && [self.kViewControllerIMAVMAPResponseAdTag length]) {
         kViewControllerIMAVMAPResponseAdTag = self.kViewControllerIMAVMAPResponseAdTag;
     }
@@ -67,7 +63,7 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 
 - (void)setup
 {
-    NSLog(@"%@", self.kViewControllerCatalogToken);
+    [_delegate bufferingVideo];
     BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
     
     self.manager = manager;
@@ -98,7 +94,6 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     } else if (self.kViewControllerVideoURL != nil && [self.kViewControllerVideoURL length]){
       [self playVideoFromUrl];
     }
-    
 
     [self resumeAdAfterForeground];
 }
@@ -207,17 +202,20 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
                 NSLog(@"BrightcovePluginViewController Debug - Ad Started.");
                 [self.activityView removeFromSuperview];
                 self.adIsPlaying = YES;
+                [_delegate adStarted];
                 break;
             case kIMAAdEvent_COMPLETE:
                 NSLog(@"BrightcovePluginViewController Debug - Ad Completed.");
                 [self.view addSubview:self.activityView];
                 self.adIsPlaying = NO;
+                [_delegate adCompleted];
                 break;
             case kIMAAdEvent_ALL_ADS_COMPLETED:
                 NSLog(@"BrightcovePluginViewController Debug - All ads completed.");
                 break;
             case kIMAAdEvent_LOADED:
                 [self.view addSubview:self.activityView];
+                [_delegate allAdsCompleted];
                 break;
             default:
                 break;
@@ -225,6 +223,13 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPlay]){
       [self.activityView removeFromSuperview];
+      [_delegate playVideo];
+    }
+    else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPause]){
+      [_delegate pauseVideo];
+    }
+    else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventEnd]){
+      [_delegate endedVideo];
     }
 }
 
@@ -262,6 +267,7 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
         [self.playbackController pauseAd];
         [self clearInstance];
     }];
+    [_delegate playerHidden];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 

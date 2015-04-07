@@ -1,7 +1,7 @@
 #import <Cordova/CDV.h>
 #import "BrightcovePluginViewController.h"
 
-@interface BrightcovePlayerPlugin : CDVPlugin
+@interface BrightcovePlayerPlugin : CDVPlugin <BrightcovePlayerPluginViewDelegate>
 
 @property NSString *token;
 @property NSString *lang;

@@ -9,21 +9,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.util.Log;
 import android.util.Patterns;
 
 public class BrightcovePlayerPlugin extends CordovaPlugin {
-  protected static final String LOG_TAG = "[BrightcoveCordovaPlugin]";
 
   private String token = null;
   private String imaLang = null;
+  private CordovaWebView appView;
+
+  private Receiver receiver;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
+    appView = webView;
+    receiver = new Receiver();
+    IntentFilter intentFilter = new IntentFilter();
+    intentFilter.addAction(BrightcoveActivity.PLAYER_EVENT);
+    cordova.getActivity().getApplicationContext().registerReceiver(receiver, intentFilter);
   }
 
   @Override
@@ -62,15 +71,15 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       context.startActivity(intent);
 
-      callbackContext.success(LOG_TAG + " Playing now with URL: " + url);
+      callbackContext.success("Playing now with URL: " + url);
     } else {
-      callbackContext.error(LOG_TAG + " URL is not valid or empty!");
+      callbackContext.error("URL is not valid or empty!");
     }
   }
 
   private void playById(String id, String vast, CallbackContext callbackContext) {
     if (this.token == null){
-      callbackContext.error(LOG_TAG + " Please init the brightcove with token!");
+      callbackContext.error("Please init the brightcove with token!");
       return;
     }
     if (id != null && id.length() > 0){
@@ -84,31 +93,43 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
       context.startActivity(intent);
 
-      callbackContext.success(LOG_TAG + " Playing now with Brightcove ID: " + id);
+      callbackContext.success("Playing now with Brightcove ID: " + id);
     } else{
-      callbackContext.error(LOG_TAG + " Empty video ID!");
+      callbackContext.error("Empty video ID!");
     }
   }
 
   private void initBrightcove(String token, CallbackContext callbackContext) {
     if (token != null && token.length() > 0){
       this.token = token;
-      callbackContext.success(LOG_TAG + " Inited");
+      callbackContext.success("Inited");
     } else{
-      callbackContext.error(LOG_TAG + " Empty Brightcove token!");
+      callbackContext.error("Empty Brightcove token!");
     }
   }
 
   private void setImaLang(String imaLang, CallbackContext callbackContext) {
     if (imaLang != null && imaLang.length() > 0){
       this.imaLang = imaLang;
-      callbackContext.success(LOG_TAG + " Language inited");
+      callbackContext.success("Language inited");
     } else{
-      callbackContext.error(LOG_TAG + " Please set language!");
+      callbackContext.error("Please set language!");
     }
   }
 
   private boolean urlIsValid(String url) {
     return Patterns.WEB_URL.matcher(url).matches();
+  }
+
+  private class Receiver extends BroadcastReceiver{
+   
+   @Override
+   public void onReceive(Context arg0, Intent arg1) {
+
+    String orgData = arg1.getStringExtra("DATA_BACK");
+    appView.sendJavascript("cordova.fireWindowEvent('" + orgData + "')");
+    
+   }
+   
   }
 }

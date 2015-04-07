@@ -54,6 +54,8 @@ public class BrightcoveActivity extends BrightcovePlayer {
   private static final String PROGRESS_BAR = "progressBar1";
   private static final String AD_FRAME = "ad_frame";
 
+  static final String PLAYER_EVENT = "PLAYER_EVENT";
+
   private String token = null;
   private String videoId = null;
   private String videoUrl = null;
@@ -69,6 +71,8 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
     super.onCreate(savedInstanceState);
     eventEmitter = brightcoveVideoView.getEventEmitter();
+
+    sendEvent("brightcovePlayer.show");
 
     Log.d(TAG, "Init");
 
@@ -94,8 +98,16 @@ public class BrightcoveActivity extends BrightcovePlayer {
     } else if (videoUrl != null){
       playByUrl(videoUrl);
     }
-    return;
 
+    sendEvent("brightcovePlayer.buffering");
+    return;
+  }
+
+  @Override
+  protected void onDestroy() {
+    sendEvent("brightcovePlayer.hide");
+
+    super.onDestroy();
   }
 
   private int getIdFromResources(String what, String where){
@@ -150,6 +162,14 @@ public class BrightcoveActivity extends BrightcovePlayer {
     eventEmitter.emit(EventType.SET_CUE_POINT, details);
   }
 
+  private void sendEvent(String event) {
+    Intent intent = new Intent();
+    intent.setAction(PLAYER_EVENT);
+
+    intent.putExtra("DATA_BACK", event);
+
+    sendBroadcast(intent);
+  }
 
   private void setupGoogleIMA() {
 
@@ -168,6 +188,31 @@ public class BrightcoveActivity extends BrightcovePlayer {
       @Override
       public void processEvent(Event event) {
         spinnerInst.setVisibility(View.GONE);
+        sendEvent("brightcovePlayer.play");
+      }
+    });
+
+    eventEmitter.on(EventType.SEEK_TO, new EventListener(){
+      @Override
+      public void processEvent(Event event) {
+        spinnerInst.setVisibility(View.GONE);
+        sendEvent("brightcovePlayer.seeked");
+      }
+    });
+
+    eventEmitter.on(EventType.DID_PAUSE, new EventListener(){
+      @Override
+      public void processEvent(Event event) {
+        spinnerInst.setVisibility(View.GONE);
+        sendEvent("brightcovePlayer.pause");
+      }
+    });
+
+    eventEmitter.on(EventType.COMPLETED, new EventListener(){
+      @Override
+      public void processEvent(Event event) {
+        spinnerInst.setVisibility(View.GONE);
+        sendEvent("brightcovePlayer.ended");
       }
     });
 
@@ -183,6 +228,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
       public void processEvent(Event event) {
         Log.v(TAG, event.getType());
         spinnerInst.setVisibility(View.GONE);
+        sendEvent("brightcovePlayer.adStarted");
       }
     });
 
@@ -198,6 +244,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
       public void processEvent(Event event) {
         Log.v(TAG, event.getType());
         spinnerInst.setVisibility(View.VISIBLE);
+        sendEvent("brightcovePlayer.adCompleted");
       }
     });
 

@@ -47,11 +47,11 @@ BrightcovePlayerPlugin.setLanguage = function(lang) {
 };
 
 function successHandler(success) {
-  console.log(success);
+  console.log("[BrightcovePlayerPlugin] OK: " + success);
 }
 
 function errorHandler(error) {
-  console.log(error);
+  console.error("[BrightcovePlayerPlugin] Error: " + error);
 }
 
 BrightcovePlayerPlugin.playing = false;
