@@ -127,8 +127,8 @@ public class BrightcovePlayerPlugin extends CordovaPlugin {
    public void onReceive(Context arg0, Intent arg1) {
 
     String orgData = arg1.getStringExtra("DATA_BACK");
-    appView.sendJavascript("cordova.fireWindowEvent('" + orgData + "')");
-    
+    String duration = arg1.getStringExtra("DURATION");
+    appView.sendJavascript("cordova.fireWindowEvent('" + orgData + "', { 'duration':'" + duration + "'})");
    }
    
   }

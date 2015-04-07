@@ -188,7 +188,15 @@ public class BrightcoveActivity extends BrightcovePlayer {
       @Override
       public void processEvent(Event event) {
         spinnerInst.setVisibility(View.GONE);
-        sendEvent("brightcovePlayer.play");
+        Intent intent = new Intent();
+        intent.setAction(PLAYER_EVENT);
+
+        String duration = Integer.toString(brightcoveVideoView.getDuration());
+
+        intent.putExtra("DATA_BACK", "brightcovePlayer.play");
+        intent.putExtra("DURATION", duration);
+
+        sendBroadcast(intent);
       }
     });
 
