@@ -30,7 +30,7 @@ UIStoryboard *storyboard = nil;
 
 - (void) playerHidden:(NSString *)currentTime
 {
-  [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.hide')"]];
+  [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.hide', {'currentTime': %@})", currentTime]];
   self.brightcoveView = nil;
 }
 
