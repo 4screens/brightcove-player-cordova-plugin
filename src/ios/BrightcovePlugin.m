@@ -30,6 +30,10 @@ UIStoryboard *storyboard = nil;
 
 - (void) playerHidden:(NSString *)currentTime
 {
+  if ([currentTime isEqualToString:@"-inf"]){
+    currentTime = @"0";
+  }
+    NSLog(@"CurrentTime: %@", currentTime);
   [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.hide', {'currentTime': %@})", currentTime]];
   self.brightcoveView = nil;
 }
@@ -41,12 +45,21 @@ UIStoryboard *storyboard = nil;
 
 - (void) playVideo:(NSString *)currentTime withDuration:(NSString *)duration
 {
-    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play', {'duration': %@, 'currentTime': %@})", duration, currentTime]];
+  if ([currentTime isEqualToString:@"-inf"]){
+    currentTime = @"0";
+  }
+  if ([duration isEqualToString:@"-inf"]){
+    currentTime = @"0";
+  }
+  [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play', {'duration': %@, 'currentTime': %@})", duration, currentTime]];
 }
 
 - (void) pauseVideo:(NSString *)currentTime
 {
-    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.pause', {'currentTime': %@})", currentTime]];
+  if ([currentTime isEqualToString:@"-inf"]){
+    currentTime = @"0";
+  }
+  [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.pause', {'currentTime': %@})", currentTime]];
 }
 
 - (void) bufferingVideo

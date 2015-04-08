@@ -108,7 +108,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
     Intent intent = new Intent();
     intent.setAction(PLAYER_EVENT);
 
-    String position = Integer.toString(brightcoveVideoView.getCurrentPosition());
+    String position = Float.toString((float)brightcoveVideoView.getCurrentPosition() / 1000);
 
     intent.putExtra("DATA_BACK", "brightcovePlayer.hide");
     intent.putExtra("POSITION", position);
@@ -199,8 +199,8 @@ public class BrightcoveActivity extends BrightcovePlayer {
         Intent intent = new Intent();
         intent.setAction(PLAYER_EVENT);
 
-        String duration = Integer.toString(brightcoveVideoView.getDuration());
-        String position = Integer.toString(brightcoveVideoView.getCurrentPosition());
+        String duration = Float.toString((float)brightcoveVideoView.getDuration() / 1000);
+        String position = Float.toString((float)brightcoveVideoView.getCurrentPosition() / 1000);
 
         intent.putExtra("DATA_BACK", "brightcovePlayer.play");
         intent.putExtra("DURATION", duration);
@@ -226,7 +226,7 @@ public class BrightcoveActivity extends BrightcovePlayer {
         Intent intent = new Intent();
         intent.setAction(PLAYER_EVENT);
 
-        String position = Integer.toString(brightcoveVideoView.getCurrentPosition());
+        String position = Float.toString((float)brightcoveVideoView.getCurrentPosition() / 1000);
 
         intent.putExtra("DATA_BACK", "brightcovePlayer.pause");
         intent.putExtra("POSITION", position);

@@ -122,15 +122,13 @@ NSString * progressString = nil;
 
 - (void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didChangeDuration:(NSTimeInterval)duration
 {
-    duration = duration * 1000;
-    durationString = [NSString stringWithFormat:@"%i", (int)duration];
+    durationString = [NSString stringWithFormat:@"%f", (float)duration];
     NSLog(@"Duration: %@", durationString);
 }
 
 - (void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didProgressTo:(NSTimeInterval)progress
 {
-    progress = progress * 1000;
-    progressString = [NSString stringWithFormat:@"%i", (int)progress];
+    progressString = [NSString stringWithFormat:@"%f", (float)progress];
     NSLog(@"Progress: %@", progressString);
 }
 
@@ -240,7 +238,6 @@ NSString * progressString = nil;
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPlay]){
       [self.activityView removeFromSuperview];
-      NSLog(@"CurrentTime: %@", kBCOVPlaybackSessionEventKeyCurrentTime);
       [_delegate playVideo:progressString withDuration:durationString];
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPause]){
