@@ -43,8 +43,9 @@ These events are fired on the window.
 - #### brightcovePlayer.play
 
   Fired on player play.
-  
-  The duration of video value is passed as a parameter "duration" with the event.
+
+  The duration of video value is passed as a parameter "duration" with the event (time in ms).
+  You can find the time value of moment when event was fired in "currentTime" variable (ms).
 
   ###### Supported Platforms
 
@@ -54,6 +55,7 @@ These events are fired on the window.
 - #### brightcovePlayer.pause
 
   Fired on player pause
+  You can find the time value of moment when event was fired in "currentTime" variable (ms).
 
   ###### Supported Platforms
 
