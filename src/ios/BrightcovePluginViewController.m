@@ -284,10 +284,10 @@ NSString * progressString = nil;
 
 - (IBAction)dismissVideoView:(id)sender
 {
+    [_delegate playerHidden:progressString];
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.playbackController pause];
         [self.playbackController pauseAd];
-        [_delegate playerHidden:progressString];
         [self clearInstance];
     }];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
