@@ -28,7 +28,7 @@ UIStoryboard *storyboard = nil;
 
 #pragma mark - Cordova Events
 
-- (void) playerHidden
+- (void) playerHidden:(NSString *)currentTime
 {
   [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.hide')"]];
   self.brightcoveView = nil;

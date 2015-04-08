@@ -105,7 +105,15 @@ public class BrightcoveActivity extends BrightcovePlayer {
 
   @Override
   protected void onDestroy() {
-    sendEvent("brightcovePlayer.hide");
+    Intent intent = new Intent();
+    intent.setAction(PLAYER_EVENT);
+
+    String position = Integer.toString(brightcoveVideoView.getCurrentPosition());
+
+    intent.putExtra("DATA_BACK", "brightcovePlayer.hide");
+    intent.putExtra("POSITION", position);
+
+    sendBroadcast(intent);
 
     super.onDestroy();
   }

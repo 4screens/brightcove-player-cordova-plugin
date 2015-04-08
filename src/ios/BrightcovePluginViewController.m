@@ -287,9 +287,9 @@ NSString * progressString = nil;
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.playbackController pause];
         [self.playbackController pauseAd];
+        [_delegate playerHidden:progressString];
         [self clearInstance];
     }];
-    [_delegate playerHidden];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
