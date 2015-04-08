@@ -38,9 +38,9 @@ UIStoryboard *storyboard = nil;
   [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.show')"]];
 }
 
-- (void) playVideo
+- (void) playVideo:(NSString *)duration
 {
-    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play')"]];
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play', {'duration': %@})", duration]];
 }
 
 - (void) pauseVideo

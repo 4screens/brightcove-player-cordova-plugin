@@ -24,6 +24,7 @@
 @implementation BrightcovePluginViewController
 
 NSString * kViewControllerIMAVMAPResponseAdTag = nil;
+NSString * durationString = nil;
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -116,6 +117,12 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 }
 
 #pragma mark Data manipulation methods
+
+- (void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didChangeDuration:(NSTimeInterval)duration
+{
+    durationString = [NSString stringWithFormat:@"%f", duration * 1000];
+    NSLog(@"Duration: %@", durationString);
+}
 
 - (void)playVideoFromUrl
 {
@@ -223,7 +230,7 @@ NSString * kViewControllerIMAVMAPResponseAdTag = nil;
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPlay]){
       [self.activityView removeFromSuperview];
-      [_delegate playVideo];
+      [_delegate playVideo:durationString];
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPause]){
       [_delegate pauseVideo];
