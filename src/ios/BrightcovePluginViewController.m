@@ -25,6 +25,7 @@
 
 NSString * kViewControllerIMAVMAPResponseAdTag = nil;
 NSString * durationString = nil;
+NSString * progressString = nil;
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
@@ -39,6 +40,7 @@ NSString * durationString = nil;
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:_notificationReceipt];
+    [self clearInstance];
 }
 
 - (void)viewDidLoad
@@ -120,8 +122,16 @@ NSString * durationString = nil;
 
 - (void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didChangeDuration:(NSTimeInterval)duration
 {
-    durationString = [NSString stringWithFormat:@"%f", duration * 1000];
+    duration = duration * 1000;
+    durationString = [NSString stringWithFormat:@"%i", (int)duration];
     NSLog(@"Duration: %@", durationString);
+}
+
+- (void)playbackController:(id<BCOVPlaybackController>)controller playbackSession:(id<BCOVPlaybackSession>)session didProgressTo:(NSTimeInterval)progress
+{
+    progress = progress * 1000;
+    progressString = [NSString stringWithFormat:@"%i", (int)progress];
+    NSLog(@"Progress: %@", progressString);
 }
 
 - (void)playVideoFromUrl
@@ -230,10 +240,11 @@ NSString * durationString = nil;
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPlay]){
       [self.activityView removeFromSuperview];
-      [_delegate playVideo:durationString];
+      NSLog(@"CurrentTime: %@", kBCOVPlaybackSessionEventKeyCurrentTime);
+      [_delegate playVideo:progressString withDuration:durationString];
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventPause]){
-      [_delegate pauseVideo];
+      [_delegate pauseVideo:progressString];
     }
     else if ([type isEqualToString:kBCOVPlaybackSessionLifecycleEventEnd]){
       [_delegate endedVideo];
@@ -264,7 +275,11 @@ NSString * durationString = nil;
     self.kViewControllerPlaylistID = nil;
     self.kViewControllerVideoURL = nil;
     self.kViewControllerCatalogToken = nil;
+    self.activityView = nil;
     self.kViewControllerIMALanguage = nil;
+    self.kViewControllerIMAVMAPResponseAdTag = nil;
+    durationString = nil;
+    progressString = nil;
 }
 
 - (IBAction)dismissVideoView:(id)sender

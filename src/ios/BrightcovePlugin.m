@@ -31,6 +31,7 @@ UIStoryboard *storyboard = nil;
 - (void) playerHidden
 {
   [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.hide')"]];
+  self.brightcoveView = nil;
 }
 
 - (void) playerShown
@@ -38,14 +39,14 @@ UIStoryboard *storyboard = nil;
   [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.show')"]];
 }
 
-- (void) playVideo:(NSString *)duration
+- (void) playVideo:(NSString *)currentTime withDuration:(NSString *)duration
 {
-    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play', {'duration': %@})", duration]];
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.play', {'duration': %@, 'currentTime': %@})", duration, currentTime]];
 }
 
-- (void) pauseVideo
+- (void) pauseVideo:(NSString *)currentTime
 {
-    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.pause')"]];
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.pause', {'currentTime': %@})", currentTime]];
 }
 
 - (void) bufferingVideo

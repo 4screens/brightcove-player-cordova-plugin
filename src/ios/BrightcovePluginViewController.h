@@ -8,8 +8,8 @@
 @optional
 - (void)playerShown;
 - (void)playerHidden;
-- (void)playVideo:(NSString *)duration;
-- (void)pauseVideo;
+- (void)playVideo:(NSString *)position withDuration:(NSString *)duration;
+- (void)pauseVideo:(NSString *)position;
 - (void)seekingVideo;
 - (void)seekedVideo;
 - (void)bufferingVideo;
