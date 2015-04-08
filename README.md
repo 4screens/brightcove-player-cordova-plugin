@@ -42,7 +42,9 @@ These events are fired on the window.
 
 - #### brightcovePlayer.play
 
-  Fired on player play
+  Fired on player play.
+  
+  The duration of video value is passed as a parameter "duration" with the event.
 
   ###### Supported Platforms
 
