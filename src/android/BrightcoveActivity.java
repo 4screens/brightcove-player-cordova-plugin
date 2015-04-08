@@ -192,9 +192,11 @@ public class BrightcoveActivity extends BrightcovePlayer {
         intent.setAction(PLAYER_EVENT);
 
         String duration = Integer.toString(brightcoveVideoView.getDuration());
+        String position = Integer.toString(brightcoveVideoView.getCurrentPosition());
 
         intent.putExtra("DATA_BACK", "brightcovePlayer.play");
         intent.putExtra("DURATION", duration);
+        intent.putExtra("POSITION", position);
 
         sendBroadcast(intent);
       }
@@ -212,7 +214,16 @@ public class BrightcoveActivity extends BrightcovePlayer {
       @Override
       public void processEvent(Event event) {
         spinnerInst.setVisibility(View.GONE);
-        sendEvent("brightcovePlayer.pause");
+
+        Intent intent = new Intent();
+        intent.setAction(PLAYER_EVENT);
+
+        String position = Integer.toString(brightcoveVideoView.getCurrentPosition());
+
+        intent.putExtra("DATA_BACK", "brightcovePlayer.pause");
+        intent.putExtra("POSITION", position);
+
+        sendBroadcast(intent);
       }
     });
 
