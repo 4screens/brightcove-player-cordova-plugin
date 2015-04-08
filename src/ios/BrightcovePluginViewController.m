@@ -56,7 +56,11 @@ NSString * progressString = nil;
 
     [self setup];
     
-    self.view.layer.transform = CATransform3DMakeRotation(M_PI_2, 0, 0.0, 1.0);
+    BOOL portrait = UIDeviceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+    
+    if (portrait){
+        self.view.layer.transform = CATransform3DMakeRotation(M_PI_2, 0, 0.0, 1.0);
+    }
     
     self.playbackController.view.frame = self.videoContainer.bounds;
     self.playbackController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
