@@ -259,6 +259,13 @@ public class BrightcoveActivity extends BrightcovePlayer {
       }
     });
 
+    eventEmitter.on(GoogleIMAEventType.DID_PAUSE_AD, new EventListener() {
+      @Override
+      public void processEvent(Event event) {
+        googleIMAComponent.getVideoAdPlayer().resumeAd();
+      }
+    });
+
     eventEmitter.on(GoogleIMAEventType.DID_FAIL_TO_PLAY_AD, new EventListener() {
       @Override
       public void processEvent(Event event) {
