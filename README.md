@@ -141,7 +141,7 @@ Supported Platforms
 BrightcovePlayerPlugin.playById
 =================
 
-Play video by Brightcove Video ID. You must init the brightcove before using with BrightcovePlayerPlugin.init!
+Play video by Brightcove Video Reference ID. You must init the brightcove before using with BrightcovePlayerPlugin.init!
 
     cordova.plugins.BrightcovePlayerPlugin.playById(brigthcoveVideoId);
 
