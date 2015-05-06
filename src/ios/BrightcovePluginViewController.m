@@ -35,6 +35,16 @@ NSString * progressString = nil;
     return NO;
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskLandscapeLeft;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationLandscapeLeft;
+}
+
 #pragma mark Setup Methods
 
 -(void)dealloc
@@ -45,26 +55,26 @@ NSString * progressString = nil;
 
 - (void)viewDidLoad
 {
-    
+
     [self createSpinner];
-    
+
     if (self.kViewControllerIMAVMAPResponseAdTag != nil && [self.kViewControllerIMAVMAPResponseAdTag length]) {
         kViewControllerIMAVMAPResponseAdTag = self.kViewControllerIMAVMAPResponseAdTag;
     }
-    
+
     [super viewDidLoad];
 
     [self setup];
-    
+
     BOOL portrait = UIDeviceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-    
+
     if (portrait){
         self.view.layer.transform = CATransform3DMakeRotation(M_PI_2, 0, 0.0, 1.0);
     }
-    
+
     self.playbackController.view.frame = self.videoContainer.bounds;
     self.playbackController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
+
     [self.videoContainer insertSubview:self.playbackController.view atIndex:0];
 }
 
@@ -72,9 +82,9 @@ NSString * progressString = nil;
 {
     [_delegate bufferingVideo];
     BCOVPlayerSDKManager *manager = [BCOVPlayerSDKManager sharedManager];
-    
+
     self.manager = manager;
-    
+
 
     IMASettings *imaSettings = [[IMASettings alloc] init];
     imaSettings.language = self.kViewControllerIMALanguage;
@@ -84,16 +94,16 @@ NSString * progressString = nil;
     renderSettings.webOpenerDelegate = self;
 
     IMAAdDisplayContainer *adDisplayContainer = [[IMAAdDisplayContainer alloc] initWithAdContainer:self.videoContainer companionSlots:nil];
-    
+
     BCOVIMAAdsRequestPolicy *adsRequestPolicy = [BCOVIMAAdsRequestPolicy videoPropertiesVMAPAdTagUrlAdsRequestPolicyWithAdDisplayContainer:adDisplayContainer];
-    
+
     self.playbackController = [manager createIMAPlaybackControllerWithSettings:imaSettings adsRenderingSettings:renderSettings adsRequestPolicy:adsRequestPolicy viewStrategy:[manager defaultControlsViewStrategy]];
     self.playbackController.delegate = self;
     self.playbackController.autoAdvance = YES;
     self.playbackController.autoPlay = YES;
-    
+
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
+
     if (self.kViewControllerCatalogToken != nil && [self.kViewControllerCatalogToken length] && self.kViewControllerPlaylistID != nil && [self.kViewControllerPlaylistID length])
     {
       self.catalogService = [[BCOVCatalogService alloc] initWithToken:self.kViewControllerCatalogToken];
@@ -139,24 +149,24 @@ NSString * progressString = nil;
 - (void)playVideoFromUrl
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
+
     NSURL *videoUrl = [[NSURL alloc] initWithString:self.kViewControllerVideoURL];
-    
+
     BCOVSource *source = [[BCOVSource alloc] initWithURL:videoUrl];
-    
+
     BCOVVideo *video = [[BCOVVideo alloc] initWithSource:source cuePoints:nil properties:[NSDictionary dictionary]];
-    
+
     NSMutableArray *videoArray = [self retrieveVideoArray:video];
-    
+
     [self.playbackController setVideos:videoArray];
 }
 
 - (void)requestContentFromCatalog
 {
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
+
     [self.catalogService findVideoWithReferenceID:self.kViewControllerPlaylistID parameters:nil completion:^(BCOVVideo *video, NSDictionary *jsonResponse, NSError *error) {
-        
+
         if (video)
         {
             NSMutableArray *videoArray = [self retrieveVideoArray:video];
@@ -166,7 +176,7 @@ NSString * progressString = nil;
         {
             NSLog(@"BrightcovePluginViewController Debug - Error retrieving video: %@", error);
         }
-        
+
     }];
 }
 
@@ -178,7 +188,7 @@ NSString * progressString = nil;
     } else {
         [videoArray addObject:video];
     }
-    
+
     return videoArray;
 }
 
@@ -258,7 +268,7 @@ NSString * progressString = nil;
 {
     self.activityView = [[UIActivityIndicatorView alloc]
                          initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
+
     self.activityView.center=self.view.center;
     [self.activityView startAnimating];
     [self.view addSubview:self.activityView];
