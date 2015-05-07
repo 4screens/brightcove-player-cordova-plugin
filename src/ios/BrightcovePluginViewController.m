@@ -37,12 +37,12 @@ NSString * progressString = nil;
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    return UIInterfaceOrientationMaskLandscapeLeft;
+    return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    return UIInterfaceOrientationLandscapeLeft;
+    return UIInterfaceOrientationLandscapeRight;
 }
 
 #pragma mark Setup Methods
