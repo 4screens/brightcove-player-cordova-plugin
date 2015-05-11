@@ -3,6 +3,8 @@
 #import "BCOVPlayerSDK.h"
 #import "IMAAdsRenderingSettings.h"
 
+#define IS_OS_8_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+
 @protocol BrightcovePlayerPluginViewDelegate <NSObject>
 
 @optional

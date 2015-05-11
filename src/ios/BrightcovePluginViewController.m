@@ -37,11 +37,17 @@ NSString * progressString = nil;
 
 - (NSUInteger)supportedInterfaceOrientations
 {
+    if (IS_OS_8_OR_LATER) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
     return UIInterfaceOrientationMaskLandscapeRight;
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
+    if (IS_OS_8_OR_LATER) {
+        return UIInterfaceOrientationPortrait;
+    }
     return UIInterfaceOrientationLandscapeRight;
 }
 
@@ -68,7 +74,7 @@ NSString * progressString = nil;
 
     BOOL portrait = UIDeviceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
 
-    if (portrait){
+    if (portrait && IS_OS_8_OR_LATER){
         self.view.layer.transform = CATransform3DMakeRotation(M_PI_2, 0, 0.0, 1.0);
     }
 
