@@ -18,7 +18,7 @@
 
   <!-- android -->
   <platform name="android">
-    <dependency id="com.google.playservices@19.0.0" />
+    <dependency id="cordova-plugin-googleplayservices@19.0.3" />
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BrightcovePlayerPlugin">
         <param name="android-package" value="net.nopattern.cordova.brightcoveplayer.BrightcovePlayerPlugin" />
