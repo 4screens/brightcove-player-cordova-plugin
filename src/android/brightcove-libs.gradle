@@ -1,0 +1,22 @@
+apply plugin: 'maven'
+
+repositories{
+  jcenter()
+  flatDir{
+      dirs 'libs'
+  }
+  maven { url 'dependencies' }
+  mavenCentral()
+}
+
+dependencies {
+   compile(name:'android-ima-plugin-4.7.2', ext:'aar')
+   compile(name:'android-sdk-4.7.2', ext:'aar')
+}
+
+android {
+  packagingOptions {
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/LICENSE'
+  }
+}

@@ -18,7 +18,7 @@
 
   <!-- android -->
   <platform name="android">
-    <dependency id="cordova-plugin-googleplayservices@19.0.3" />
+    <dependency id="cordova-google-play-services@25.0.0" />
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="BrightcovePlayerPlugin">
         <param name="android-package" value="net.nopattern.cordova.brightcoveplayer.BrightcovePlayerPlugin" />
@@ -44,12 +44,14 @@
     <source-file src="src/android/BrightcoveActivity.java" target-dir="src/net/nopattern/cordova/brightcoveplayer" />
 
     <!-- libs -->
-    <source-file src="src/android/libs/android-sdk-4.3.6.aar" target-dir="libs" />
-    <source-file src="src/android/libs/android-ima-plugin-4.3.6.jar" target-dir="libs" />
-    <source-file src="src/android/libs/sdk.jar" target-dir="libs" />
+    <framework src="src/android/brightcove-libs.gradle" custom="true" type="gradleReference" />
+
+    <resource-file src="src/android/libs/android-sdk-4.7.2.aar" target="libs/android-sdk-4.7.2.aar" />
+    <resource-file src="src/android/libs/android-ima-plugin-4.7.2.aar" target="libs/android-ima-plugin-4.7.2.aar" />
+    <resource-file src="src/android/libs/google-ima-sdk-v3.jar" target="libs/google-ima-sdk-v3.jar" />
 
     <!-- layout -->
-    <source-file src="src/android/res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout" />
+    <source-file src="src/android/res/layout/bundled_video_activity_brightcove.xml" target-dir="res/layout/" />
   </platform>
 
   <!-- ios -->
