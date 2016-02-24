@@ -13,7 +13,7 @@ UIStoryboard *storyboard = nil;
         UIStoryboard *storyboardTemp = [UIStoryboard storyboardWithName:@"BrightcovePlugin"
                                                   bundle:nil];
         self.storyboard = storyboardTemp;
-    
+
         self.brightcoveView = [self.storyboard instantiateInitialViewController];
         self.brightcoveView.delegate = self;
         self.brightcoveView.kViewControllerIMALanguage = self.lang;
@@ -75,7 +75,7 @@ UIStoryboard *storyboard = nil;
 
 - (void)endedVideo
 {
-    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.ended')"]];    
+    [self.commandDelegate evalJs:[NSString stringWithFormat:@"cordova.fireWindowEvent('brightcovePlayer.ended')"]];
 }
 
 - (void)adStarted
@@ -113,7 +113,7 @@ UIStoryboard *storyboard = nil;
 {
   CDVPluginResult* pluginResult = nil;
   self.lang = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
-    
+
   if (self.lang != nil && [self.lang length]) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Language inited"];
   } else {
@@ -126,17 +126,17 @@ UIStoryboard *storyboard = nil;
 - (void)playByUrl:(CDVInvokedUrlCommand*)command
 {
   CDVPluginResult* pluginResult = nil;
-    
+
   NSString* url = [command argumentAtIndex:0 withDefault:@"" andClass:[NSString class]];
   NSString* vastLink = [command argumentAtIndex:1 withDefault:@"" andClass:[NSString class]];
-    
+
   if (url != nil && [url length] && [self validateUrl:url]) {
     [self initBrightcoveView];
     [self setVideoUrl:url];
     if (vastLink != nil && [vastLink length]){
       [self setVast:vastLink];
     }
-    [self.viewController showViewController:self.brightcoveView sender:self.viewController];
+    [self.viewController presentViewController:self.brightcoveView animated:YES completion:nil];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with URL: %@", url]];
   } else {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"URL is not valid or empty!"];
@@ -148,7 +148,7 @@ UIStoryboard *storyboard = nil;
 - (void)playById:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
-    
+
     if (self.token == nil && ![self.token length]) {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Please init the brightcove with token!"];
     } else {
@@ -160,13 +160,13 @@ UIStoryboard *storyboard = nil;
         if (vastLink != nil && [vastLink length]){
           [self setVast:vastLink];
         }
-        [self.viewController showViewController:self.brightcoveView sender:self.viewController];
+        [self.viewController presentViewController:self.brightcoveView animated:YES completion:nil];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"Playing now with Brightcove ID: %@", videoId]];
       } else {
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Empty video ID!"];
       }
     }
-    
+
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
