@@ -1,11 +1,14 @@
-Brightcove Player Cordova Plugin 
+#Brightcove Player Cordova Plugin 
 ======
 
 The `net.nopattern.cordova.brightcoveplayer` object provides functions to make interacting with the native player provided by Brightcove for Cordova. Player works with Brightcove Video Cloud hosting (so you can play video by Brigthcove ID) and also you can play any video by providing the video URL. Ability to work with IMA Ad also implemented.
 
     cordova plugin add https://github.com/4screens/brightcove-player-cordova-plugin.git
 
-Methods
+
+#WARNING! Updated to version 2 (based on Brightcove SDK 1.4.7). Please use v1 if you still use ant on android.
+
+#Methods
 -------
 
 - cordova.plugins.BrightcovePlayerPlugin.init
@@ -13,12 +16,12 @@ Methods
 - cordova.plugins.BrightcovePlayerPlugin.playByUrl
 - cordova.plugins.BrightcovePlayerPlugin.playById
 
-Properties
+#Properties
 --------
 
 
 
-Events
+#Events
 --------
 These events are fired on the window.
 
